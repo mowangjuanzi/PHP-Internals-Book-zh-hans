@@ -1,11 +1,9 @@
-Using the PHP build system
+使用 PHP 编译系统
 ==========================
 
-In this chapter we'll explain how to use the PHP build system to compile both itself and additional extensions. This
-chapter will not yet be concerned with writing your own autoconf build instructions and only explain how to use the
-tooling.
+本章我们将会解释如何使用 PHP 编译系统编译本身及其扩展。本章还不会涉及编写自定义 autoconf 编译指令，而只会解释如何使用工具。
 
-Contents:
+目录：
 
 .. toctree::
     :maxdepth: 2
