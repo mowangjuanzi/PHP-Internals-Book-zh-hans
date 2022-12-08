@@ -1,0 +1,79 @@
+目录
+=================
+
+| `原文：9a2d1a1084af9c444da6a90eed44e2ae05682f22 <https://github.com/phpinternalsbook/PHP-Internals-Book/blob/master/Book/index.rst>`_
+
+PHP 7 和 PHP 8
+---------------
+
+.. toctree::
+    :maxdepth: 3
+
+    php7/introduction.rst
+    php7/build_system.rst
+    php7/zvals.rst
+    php7/internal_types.rst
+    php7/classes_objects.rst
+    php7/extensions_design.rst
+    php7/memory_management.rst
+    php7/zend_engine.rst
+    php7/debugging.rst
+
+..
+    php7/hashtables.rst
+    php7/prerequisites.rst
+    php7/php_first_look.rst
+    php7/managing_memory.rst
+    php7/creating_ext.rst
+    php7/functions.rst
+    php7/resources.rst
+    php7/streams.rst
+    php7/constants.rst
+    php7/ini.rst
+    php7/sapis.rst
+    php7/zend_engine.rst
+    php7/final.rst
+
+PHP 5
+-----
+
+.. toctree::
+    :maxdepth: 2
+
+    php5/introduction.rst
+    php5/build_system.rst
+
+* 创建 PHP 扩展
+
+.. toctree::
+    :maxdepth: 2
+
+    php5/zvals.rst
+
+* 实现函数
+
+.. toctree::
+    :maxdepth: 2
+
+    php5/hashtables.rst
+    php5/classes_objects.rst
+
+测试 PHP 源码
+------------------
+
+编写适用于 PHP5 & PHP7 的测试。
+
+.. toctree::
+    :maxdepth: 3
+
+    tests/introduction.rst
+    tests/overview.rst
+    tests/running_the_test_suite.rst
+    tests/phpt_file_structure.rst
+    tests/examining_failed_test_output.rst
+
+索引和搜索
+================
+
+* :ref:`genindex`
+* :ref:`search`
