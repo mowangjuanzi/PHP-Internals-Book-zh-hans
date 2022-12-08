@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Extensions design &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Learning the PHP lifecycle" href="extensions_design/php_lifecycle.html" />
+    <link rel="prev" title="Object handlers" href="classes_objects/object_handlers.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>PHP 内幕</span></a></h1>
+        <h2 class="heading"><span>Extensions design</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="classes_objects/object_handlers.html">Object handlers</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">目录</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <section id="extensions-design">
+<h1>Extensions design<a class="headerlink" href="#extensions-design" title="此标题的永久链接">¶</a></h1>
+<p>In this chapter you’ll learn how to design PHP extensions. You’ll learn about the PHP lifecycle, how and when to manage
+memory, the different hooks you can use or the different function pointers you can replace to actively change PHP’s
+internal machinery. You’ll design PHP functions and classes to provide them through your extension, and you’ll play
+with INI settings.</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#the-parallelism-models">The parallelism models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#the-php-extensions-hooks">The PHP extensions hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#hooking-by-overwriting-function-pointers">Hooking by overwriting function pointers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_skeleton.html">A look into a PHP extension and extension skeleton</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#how-the-engine-loads-extensions">How the engine loads extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#what-is-a-php-extension">What is a PHP extension ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#generating-extension-skeleton-with-scripts">Generating extension skeleton with scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#new-age-of-the-extension-skeleton-generator">New age of the extension skeleton generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#publishing-api">Publishing API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_functions.html">Registering and using PHP functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#zend-function-entry-structure">zend_function_entry structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#registering-php-functions">Registering PHP functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#declaring-function-arguments">Declaring function arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#the-php-function-structure-and-api-in-c">The PHP function structure and API, in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#adding-tests">Adding tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#playing-with-constants">Playing with constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#a-go-with-hashtables-php-arrays">A go with Hashtables (PHP arrays)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#managing-references">Managing references</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/globals_management.html">Managing global state</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/globals_management.html#managing-request-globals">Managing request globals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/globals_management.html#using-true-globals">Using true globals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_infos.html">Publishing extension information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_infos.html#minfo-hook">MINFO() hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_infos.html#a-note-about-the-reflection-api">A note about the Reflection API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/hooks.html">Hooks provided by PHP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#hooking-into-the-execution-of-functions">Hooking into the execution of functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#overwriting-an-internal-function">Overwriting an Internal Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#modifying-the-abstract-syntax-tree-ast">Modifying the Abstract Syntax Tree (AST)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#hooking-into-script-file-compilation">Hooking into Script/File Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#notification-when-error-handler-is-called">Notification when Error Handler is called</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#notification-when-exception-is-thrown">Notification when Exception is thrown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#hooking-into-eval">Hooking into eval()</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#hooking-into-the-garbage-collector">Hooking into the Garbage Collector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#overwrite-interrupt-handler">Overwrite Interrupt Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#replacing-opcode-handlers">Replacing Opcode Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/ini_settings.html">Declaring and using INI settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#reminders-on-ini-settings">Reminders on INI settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#zoom-on-ini-settings">Zoom on INI settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#registering-and-using-ini-entries">Registering and using INI entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#validators-and-globals-memory-bridge">Validators and globals memory bridge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#using-a-displayer">Using a displayer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/zend_extensions.html">Zend Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#on-differences-between-php-and-zend-extensions">On differences between PHP and Zend extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#what-is-a-zend-extension">What is a Zend extension ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#why-need-a-zend-extension">Why need a Zend extension ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#api-versions-and-conflicts-management">API versions and conflicts management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#zend-extensions-lifetime-hooks">Zend extensions lifetime hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#practice-my-first-example-zend-extension">Practice : my first example Zend extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#hybrid-extensions">Hybrid extensions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="classes_objects/object_handlers.html">Object handlers</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">目录</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer feedback">
+        The repository for this book is available on <a href="https://github.com/phpinternalsbook/PHP-Internals-Book">GitHub</a>.
+        <br/><br/>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+        </a>
+        <br />
+        The PHP internals book is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-41617167-1', 'phpinternalsbook.com');
+      ga('send', 'pageview');
+    </script>
+
+  </body>
+</html>
