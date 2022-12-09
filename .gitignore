@@ -2,3 +2,4 @@ doctrees/
 BookHTML/
 BookLatex/
 *.swp
+.DS_Store
