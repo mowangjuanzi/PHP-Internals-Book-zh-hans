@@ -2,82 +2,66 @@
 
 .. _building_php:
 
-Building PHP
+编译 PHP
 ============
 
-This chapter explains how you can compile PHP in a way that is suitable for development of extensions or core
-modifications. We will only cover builds on Unixoid systems. If you wish to build PHP on Windows, you should take a look
-at the `step-by-step build instructions`__ in the PHP wiki [#]_.
+本章解释了如何以适合扩展开发和核心修改的方式编译 PHP。 我们只涵盖了类 UNIX 系统。如果想要在 Windows 中编译 PHP，应该查看 PHP WIKI
+中的 `step-by-step build instructions`__ [#]_。
 
-This chapter also provides an overview of how the PHP build system works and which tools it uses, but a detailed
-description is outside the scope of this book.
+本章还概述了 PHP 构建系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。
 
 .. __: https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2
 
-.. [#] Disclaimer: We are not liable for any adverse health effects caused by the attempt to compile PHP on Windows.
+.. [#] 免责声明：对尝试在 Windows 上编译 PHP 造成的任何不良健康影响，我们概不负责。
 
-Why not use packages?
+为什么不使用包？
 ---------------------
 
-If you are currently using PHP, you likely installed it through your package manager, using a command like
-``sudo apt-get install php``. Before explaining the actual compilation you should first understand why doing your own
-compile is necessary and you can't just use a prebuilt package. There are multiple reasons for this:
+如果你当前正在使用 PHP，可能会使用 ``sudo apt-get install php`` 之类的命令通过包管理器安装
+PHP。在解释实际的编译之前，应该首先了解为什么需要自己编译，而不能只使用预编译的。原因有很多：
 
-Firstly, the prebuilt package only contains the resulting binaries, but misses other things that are necessary to
-compile extensions, e.g. header files. This can be easily remedied by installing a development package, which is
-typically called ``php-dev``. To facilitate debugging with valgrind or gdb one could additionally install debug symbols,
-which are usually available as another package called ``php-dbg``.
+首先，预编译包只会提供生成的二进制文件，但会缺少编译扩展必需的其它内容，比如：头文件。这可以通过安装开发包（通常称为
+``php-dev``）解决。为了便于使用 valgrind 或 gdb 进行调试，可以安装调试符号，这通常另外一个由称为 ``php-dbg``
+的包提供这些符号。
 
-But even if you install headers and debug symbols, you'll still be working with a release build of PHP. This means that
-it will be built with high optimization level, which can make debugging very hard. Furthermore release builds do not
-enable assertions and do not generate warnings about memory leaks. Additionally, prebuilt packages don't enable
-thread safety, which may be helpful to ensure your extension builds in a thread-safe configuration.
+但即使安装了头文件和调试符号，你仍然会使用 PHP 的发行版本。这意味着 PHP 将以高优化级别编译，这会使调试变得困难。
+另外发行版本也不启用断言，也不生成有关内存泄露的警告。还有，预编译包也不启用线程安全，这可能有助于确保扩展在线程安装配置中构建。
 
-Another issue is that nearly all distributions apply additional patches to PHP. In some cases these patches only
-contain minor changes related to configuration, but some distributions make use of highly intrusive patches like
-Suhosin. Some of these patches are known to introduce incompatibilities with low-level extensions like opcache.
+还有一个问题是几乎所有的发行版都对 PHP 应用了额外的补丁。在某些情况下，这些补丁仅包含于配置相关的微小更改，但也有一些发行版使用了 Suhosin
+等具有高度浸入的补丁。众所周知，其中一些补丁与低级扩展（如 opcache）有不兼容的内容。
 
-PHP only provides support for the software as provided on `php.net`_ and not for the distribution-modified versions. If
-you want to report bugs, submit patches or make use of our help channels for extension-writing, you should always work
-against the official PHP version. When we talk about "PHP" in this book, we're always referring to the officially
-supported version.
+PHP 只会为 `php.net`_ 上提供的软件提供支持，不为分发修改后的版本提供支持。如果想要报告
+bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始终使用官方 PHP 版本。当我们在本书中谈论“PHP”时，始终说的是官方支持的版本。
 
 .. _`php.net`: http://www.php.net
 
-Obtaining the source code
+获取源代码
 -------------------------
 
-Before you can build PHP you first need to obtain its source code. There are two ways to do this: You can either
-download an archive from `PHP's download page`_ or clone the git repository from `Github`_.
+在编译 PHP 之前，首先需要获取源代码。有两种方式：从 `PHP's download page`_ 下载归档文件或从 `Github`_ 克隆 git 存储库。
 
-The build process is slightly different for both cases: The git repository doesn't bundle a ``configure`` script, so
-you'll need to generate it using the ``buildconf`` script, which makes use of autoconf. Furthermore the git repository
-does not contain a pregenerated lexer and parser, so you'll also need to have re2c and bison installed.
+两者的构建过程略有不同：git 存储库不捆绑 ``configure`` 脚本，所以需要使用 ``buildconf`` 脚本生成，该脚本利用了 autoconf。另外，git
+存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。
 
-We recommend to checkout out the source code from git, because this will provide you with an easy way to keep your
-installation updated and to try your code with different versions. A git checkout is also required if you want to
-submit patches or pull requests for PHP.
+建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。
 
-To clone the repository, run the following commands in your shell::
+在终端中克隆存储库，运行下列命令::
 
     ~> git clone https://github.com/php/php-src.git
     ~> cd php-src
-    # by default you will be on the master branch, which is the current
-    # development version. You can check out a stable branch instead:
+    # 默认是 master 分支，这是当前
+    # 开发版本。可以检出到稳定分支：
     ~/php-src> git checkout PHP-8.1
 
-If you have issues with the git checkout, take a look at the `Git FAQ`_ on the PHP wiki. The Git FAQ also explains how
-to setup git if you want to contribute to PHP itself. Furthermore it contains instructions on setting up multiple
-working directories for different PHP versions. This can be very useful if you need to test your extensions or changes
-against multiple PHP versions and configurations.
+如果对检出有问题，请查看 PHP wiki 上的 `Git FAQ`_。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
+PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版本和配置测试扩展或者更改，这非常有用。
 
-Before continuing, you should also install some basic build dependencies with your package manager (you'll likely
-already have the first three installed by default):
+进行下一步之前，应该使用包管理器安装一些基本的编译依赖项（默认已经安装了三个）：
 
-* ``gcc`` and ``g++``  or some other compiler toolchain.
-* ``libc-dev``, which provides the C standard library, including headers.
-* ``make``, which is the build-management tool PHP uses.
-* ``autoconf``, which is used to generate the ``configure`` script.
+* ``gcc`` 和 ``g++`` 或者一些编译器工具链。
+* ``libc-dev`` 提供 C 标准库，包括头文件。
+* ``make`` 这是 PHP 使用的编译管理工具。
+* ``autoconf`` 用于生成 ``configure`` 脚本。
 
   * 2.59 or higher (for PHP 7.0-7.1)
   * 2.64 or higher (for PHP 7.2)
@@ -107,7 +91,7 @@ default PHP build will require libxml and libsqlite3, which you can install via 
 .. _Github: http://www.github.com/php/php-src
 .. _Git FAQ: https://wiki.php.net/vcs/gitfaq
 
-Build overview
+编译概述
 --------------
 
 Before taking a closer look at what the individual build steps do, here are the commands you need to execute for a
@@ -136,7 +120,7 @@ development.
 
 Now lets take a closer look at the individual build steps!
 
-The ``./buildconf`` script
+``./buildconf`` 脚本
 --------------------------
 
 If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
@@ -164,7 +148,7 @@ the packaged source code and want to generate a new ``./configure``) and additio
 If you update your git repository using ``git pull`` (or some other command) and get weird errors during the ``make``
 step, this usually means that something in the build configuration changed and you need to rerun ``./buildconf``.
 
-The ``./configure`` script
+``./configure`` 脚本
 --------------------------
 
 Once the ``./configure`` script is generated you can make use of it to customize your PHP build. You can list all
@@ -314,7 +298,7 @@ and undefined behavior at runtime::
 
 These options only work reliably since PHP 7.4 and will significantly slow down the generated PHP binary.
 
-``make`` and ``make install``
+``make`` 和 ``make install``
 -----------------------------
 
 After everything is configured, you can use ``make`` to perform the actual compilation::
@@ -443,7 +427,7 @@ build process to obtain information about compiler options and paths. You can al
 about your build, e.g. your configure options or the default extension directory. This information is also provided by
 ``./php -i`` (phpinfo), but ``php-config`` provides it in a simpler form (which can be easily used by automated tools).
 
-Running the test suite
+运行测试套件
 ----------------------
 
 If the ``make`` command finishes successfully, it will print a message encouraging you to run ``make test``:
@@ -494,7 +478,7 @@ be::
 We will take a more detailed look at the ``run-tests.php`` system later, in particular also talk about how to write your
 own tests and how to debug test failures. :doc:`See the dedicated tests chapter <../../tests/introduction>`.
 
-Fixing compilation problems and ``make clean``
+修复编译问题和 ``make clean``
 ----------------------------------------------
 
 As you may know ``make`` performs an incremental build, i.e. it will not recompile all files, but only those ``.c``
