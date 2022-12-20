@@ -67,7 +67,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 </section>
 <section id="id5">
 <h2>获取源代码<a class="headerlink" href="#id5" title="此标题的永久链接">¶</a></h2>
-<p>在编译 PHP 之前，首先需要获取源代码。有两种方式：从 <a class="reference external" href="http://www.php.net/downloads.php">PHP’s download page</a> 下载归档文件或从 <a class="reference external" href="http://www.github.com/php/php-src">Github</a> 克隆 git 存储库。</p>
+<p>在编译 PHP 之前，首先需要获取源代码。有两种方式：从 <a class="reference external" href="http://www.php.net/downloads.php">PHP 下载页面</a> 下载归档文件或从 <a class="reference external" href="http://www.github.com/php/php-src">Github</a> 克隆 git 存储库。</p>
 <p>两者的构建过程略有不同：git 存储库不捆绑 <code class="docutils literal notranslate"><span class="pre">configure</span></code> 脚本，所以需要使用 <code class="docutils literal notranslate"><span class="pre">buildconf</span></code> 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。</p>
 <p>建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。</p>
@@ -79,7 +79,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 ~/php-src&gt; git checkout PHP-8.1
 </pre></div>
 </div>
-<p>如果对检出有问题，请查看 PHP wiki 上的 <a class="reference external" href="https://wiki.php.net/vcs/gitfaq">Git FAQ</a>。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
+<p>如果对检出有问题，请查看 PHP wiki 上的 <a class="reference external" href="https://wiki.php.net/vcs/gitfaq">Git 问答</a>。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
 PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版本和配置测试扩展或者更改，这非常有用。</p>
 <p>进行下一步之前，应该使用包管理器安装一些基本的编译依赖项（默认已经安装了三个）：</p>
 <ul class="simple">
@@ -88,67 +88,59 @@ PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版�
 <li><p><code class="docutils literal notranslate"><span class="pre">make</span></code> 这是 PHP 使用的编译管理工具。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">autoconf</span></code> 用于生成 <code class="docutils literal notranslate"><span class="pre">configure</span></code> 脚本。</p>
 <ul>
-<li><p>2.59 or higher (for PHP 7.0-7.1)</p></li>
-<li><p>2.64 or higher (for PHP 7.2)</p></li>
-<li><p>2.68 or higher (for PHP 7.3 and higher)</p></li>
+<li><p>2.59 或更高（用于 PHP 7.0-7.1）</p></li>
+<li><p>2.64 或更高（用于 PHP 7.2）</p></li>
+<li><p>2.68 或更高（用于 PHP 7.3 及其更高）</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">libtool</span></code>, which helps manage shared libraries.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bison</span></code> which is used to generate the PHP parser.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">libtool</span></code>，帮助管理共享库。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bison</span></code> 用于生成 PHP 解析器。</p>
 <ul>
-<li><p>2.4 or higher (for PHP 7.0-7.3)</p></li>
-<li><p>3.0 or higher (for PHP 7.4 and higher)</p></li>
+<li><p>2.4 或更高（用于 7.0-7.3）</p></li>
+<li><p>3.0 或更高（用于 PHP 7.4 及其更高）</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">re2c</span></code>, which is used to generate the PHP lexer.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">re2c</span></code>，用于生成 PHP 词法分析器。</p>
 <ul>
-<li><p>Optional for PHP &lt;= 7.3.</p></li>
-<li><p>0.13.4 or higher (for PHP 7.4 and higher)</p></li>
+<li><p>PHP &lt;= 7.3 时可选</p></li>
+<li><p>0.13.4 或更高（用于 PHP 7.4 及其更高）</p></li>
 </ul>
 </li>
 </ul>
-<p>On Debian/Ubuntu you can install all these with the following command:</p>
+<p>在 Debian/Ubuntu 上，可以使用下列命令安装所有:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sudo apt-get install build-essential autoconf libtool bison re2c pkg-config
 </pre></div>
 </div>
-<p>Depending on the extensions that you enable during the <code class="docutils literal notranslate"><span class="pre">./configure</span></code> stage PHP will need a number of additional
-libraries. When installing these, check if there is a version of the package ending in <code class="docutils literal notranslate"><span class="pre">-dev</span></code> or <code class="docutils literal notranslate"><span class="pre">-devel</span></code> and
-install them instead. The packages without <code class="docutils literal notranslate"><span class="pre">dev</span></code> typically do not contain necessary header files. For example a
-default PHP build will require libxml and libsqlite3, which you can install via the <code class="docutils literal notranslate"><span class="pre">libxml2-dev</span></code> and
-<code class="docutils literal notranslate"><span class="pre">libsqlite3-dev</span></code> packages.</p>
+<p>根据 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 阶段启用的扩展，PHP 将需要很多额外的库。安装时，将检查是否有 <code class="docutils literal notranslate"><span class="pre">-dev</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-devel</span></code>
+结尾的软件包版本，然后安装它们。没有 <code class="docutils literal notranslate"><span class="pre">dev</span></code> 的包通常不包含必要的头文件。例如，默认的 PHP 编译将需要 libxml 和
+libsqlite3，可以通过 <code class="docutils literal notranslate"><span class="pre">libxml2-dev</span></code> 和 <code class="docutils literal notranslate"><span class="pre">libsqlite3-dev</span></code> 包安装。</p>
 </section>
-<section id="id6">
-<h2>编译概述<a class="headerlink" href="#id6" title="此标题的永久链接">¶</a></h2>
-<p>Before taking a closer look at what the individual build steps do, here are the commands you need to execute for a
-“default” PHP build:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./buildconf     <span class="c1"># only necessary if building from git</span>
+<section id="id7">
+<h2>编译概述<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h2>
+<p>在仔细研究每个编译步骤的作用之前，这里时需要为“默认”PHP 编译执行的命令:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./buildconf     <span class="c1"># 只有从 git 编译时才需要</span>
 ~/php-src&gt; ./configure
 ~/php-src&gt; make -jN
 </pre></div>
 </div>
-<p>For a fast build, replace <code class="docutils literal notranslate"><span class="pre">N</span></code> with the number of CPU cores you have available (you can run <code class="docutils literal notranslate"><span class="pre">nproc</span></code> to determine
-this).</p>
-<p>By default PHP will build binaries for the CLI and CGI SAPIs, which will be located at <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> and
-<code class="docutils literal notranslate"><span class="pre">sapi/cgi/php-cgi</span></code> respectively. To check that everything went well, try running <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span> <span class="pre">-v</span></code>.</p>
-<p>Additionally you can run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code> to install PHP into <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>. The target directory can be changed
-by specifying a <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> in the configuration stage:</p>
+<p>为了快速编译，替换 <code class="docutils literal notranslate"><span class="pre">N</span></code> 为有效的 CPU 内核数（可以运行 <code class="docutils literal notranslate"><span class="pre">nproc</span></code> 来确定）。</p>
+<p>默认 PHP 将为 CLI 和 CGI SAPI 编译二进制文件，分别位于 <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> 和
+<code class="docutils literal notranslate"><span class="pre">sapi/cgi/php-cgi</span></code>。要检查是否一切顺利，请尝试运行 <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span> <span class="pre">-v</span></code>。</p>
+<p>此外，可以运行 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code> 将 PHP 安装到 <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>。可以在配置阶段指定 <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> 来更改目标目录:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/myphp
 ~/php-src&gt; make -jN
 ~/php-src&gt; make install
 </pre></div>
 </div>
-<p>Here <code class="docutils literal notranslate"><span class="pre">$HOME/myphp</span></code> is the installation location that will be used during the <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> step. Note that
-installing PHP is not necessary, but can be convenient if you want to use your PHP build outside of extension
-development.</p>
-<p>Now lets take a closer look at the individual build steps!</p>
+<p>这里的 <code class="docutils literal notranslate"><span class="pre">$HOME/myphp</span></code> 时在 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 步骤中使用的安装位置。注意，安装 PHP
+不是必需的，但想要在扩展开发之外使用 PHP 编译则可能会很方便。</p>
+<p>现在睁大双眼看每个编译步骤吧！</p>
 </section>
 <section id="buildconf">
 <h2><code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本<a class="headerlink" href="#buildconf" title="此标题的永久链接">¶</a></h2>
-<p>If you are building from the git repository, the first thing you’ll have to do is run the <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> script. This
-script does little more than invoking the <code class="docutils literal notranslate"><span class="pre">build/build.mk</span></code> makefile, which in turn calls <code class="docutils literal notranslate"><span class="pre">build/build2.mk</span></code>.</p>
-<p>The main job of these makefiles is to run <code class="docutils literal notranslate"><span class="pre">autoconf</span></code> to generate the <code class="docutils literal notranslate"><span class="pre">./configure</span></code> script and <code class="docutils literal notranslate"><span class="pre">autoheader</span></code> to
-generate the <code class="docutils literal notranslate"><span class="pre">main/php_config.h.in</span></code> template. The latter file will be used by configure to generate the final
-configuration header file <code class="docutils literal notranslate"><span class="pre">main/php_config.h</span></code>.</p>
+<p>如果从 git 存储库编译，第一件事就是运行 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本。该脚本只是调用 <code class="docutils literal notranslate"><span class="pre">build/build.mk</span></code> makefile，又调用 <code class="docutils literal notranslate"><span class="pre">build/build2.mk</span></code>。</p>
+<p>这些 makefile 的主要工作是运行 <code class="docutils literal notranslate"><span class="pre">autoconf</span></code> 生成 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本和 <code class="docutils literal notranslate"><span class="pre">autoheader</span></code> 生成 <code class="docutils literal notranslate"><span class="pre">main/php_config.h.in</span></code>
+模板。后面的文件会被配置生成最终的配置头文件 <code class="docutils literal notranslate"><span class="pre">main/php_config.h</span></code>。</p>
 <p>Both utilities produce their results from the <code class="docutils literal notranslate"><span class="pre">configure.ac</span></code> file (which specifies most of the PHP build process),
 the <code class="docutils literal notranslate"><span class="pre">build/php.m4</span></code> file (which specifies a large number of PHP-specific M4 macros) and the <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> files of
 individual extensions and SAPIs (as well as a bunch of other <a class="reference external" href="http://www.gnu.org/software/m4/m4.html">m4 files</a>).</p>
@@ -410,8 +402,8 @@ build process to obtain information about compiler options and paths. You can al
 about your build, e.g. your configure options or the default extension directory. This information is also provided by
 <code class="docutils literal notranslate"><span class="pre">./php</span> <span class="pre">-i</span></code> (phpinfo), but <code class="docutils literal notranslate"><span class="pre">php-config</span></code> provides it in a simpler form (which can be easily used by automated tools).</p>
 </section>
-<section id="id7">
-<h2>运行测试套件<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h2>
+<section id="id8">
+<h2>运行测试套件<a class="headerlink" href="#id8" title="此标题的永久链接">¶</a></h2>
 <p>If the <code class="docutils literal notranslate"><span class="pre">make</span></code> command finishes successfully, it will print a message encouraging you to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Build complete.
 Don&#39;t forget to run &#39;make test&#39;

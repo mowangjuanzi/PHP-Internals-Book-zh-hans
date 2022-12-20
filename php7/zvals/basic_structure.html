@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Basic structure &#8212; PHP 内幕</title>
+    <title>基础结构 &#8212; PHP 内幕</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
@@ -20,16 +20,16 @@
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="Memory management" href="memory_management.html" />
-    <link rel="prev" title="Zvals" href="../zvals.html" /> 
+    <link rel="prev" title="Zval" href="../zvals.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Basic structure</span></h2>
+        <h2 class="heading"><span>基础结构</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="../zvals.html">Zvals</a>
+        «&#160;&#160;<a href="../zvals.html">Zval</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
@@ -40,12 +40,11 @@
       <div class="content" role="main">
         
         
-  <section id="basic-structure">
-<h1>Basic structure<a class="headerlink" href="#basic-structure" title="此标题的永久链接">¶</a></h1>
-<p>A zval (short for “Zend value”) represents an arbitrary PHP value. As such it is likely the most important structure in
-all of PHP and you’ll be working with it a lot. This section describes the basic concepts behind zvals and their use.</p>
-<section id="types-and-values">
-<h2>Types and values<a class="headerlink" href="#types-and-values" title="此标题的永久链接">¶</a></h2>
+  <section id="id1">
+<h1>基础结构<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h1>
+<p>zval（“Zend value”的缩写）表示任意 PHP 值。因此它是所有 PHP 中最重要的结构并且将经常使用它。本节介绍 zval 背后的基本概念及其使用。</p>
+<section id="id2">
+<h2>类型和值<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h2>
 <p>Among other things, every zval stores some value and the type this value has. This is necessary because PHP is a
 dynamically typed language and as such variable types are only known at run-time and not at compile-time. Furthermore,
 the type can change during the life of a zval, so if the zval previously stored an integer it may contain a string at a
@@ -405,7 +404,7 @@ the implementation.</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="../zvals.html">Zvals</a>
+        «&#160;&#160;<a href="../zvals.html">Zval</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;

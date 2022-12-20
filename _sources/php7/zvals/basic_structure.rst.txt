@@ -1,10 +1,9 @@
-Basic structure
+基础结构
 ===============
 
-A zval (short for "Zend value") represents an arbitrary PHP value. As such it is likely the most important structure in
-all of PHP and you'll be working with it a lot. This section describes the basic concepts behind zvals and their use.
+zval（“Zend value”的缩写）表示任意 PHP 值。因此它是所有 PHP 中最重要的结构并且将经常使用它。本节介绍 zval 背后的基本概念及其使用。 
 
-Types and values
+类型和值
 ----------------
 
 Among other things, every zval stores some value and the type this value has. This is necessary because PHP is a

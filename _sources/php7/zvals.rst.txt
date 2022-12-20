@@ -1,12 +1,11 @@
 .. _zvals:
 
-Zvals
+Zval
 =====
 
-In this chapter the ``zval`` data structure, which is used to represent arbitrary PHP values, is introduced. We
-explain the concepts behind zvals and how to use them in extension code.
+本章介绍了用于表示任意 PHP 值的 ``zval`` 数据结构。本章解释了 zval 背后的概念以及如何在扩展代码中使用它们。
 
-Contents:
+目录：
 
 .. toctree::
     :maxdepth: 2

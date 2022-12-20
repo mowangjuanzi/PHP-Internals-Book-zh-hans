@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Zvals &#8212; PHP 内幕</title>
+    <title>Zval &#8212; PHP 内幕</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
     <link rel="stylesheet" type="text/css" href="../_static/style.css" />
@@ -19,12 +19,12 @@
     <script src="../_static/translations.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Basic structure" href="zvals/basic_structure.html" />
+    <link rel="next" title="基础结构" href="zvals/basic_structure.html" />
     <link rel="prev" title="Building PHP extensions" href="build_system/building_extensions.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Zvals</span></h2>
+        <h2 class="heading"><span>Zval</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
@@ -33,22 +33,21 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="zvals/basic_structure.html">Basic structure</a>&#160;&#160;»
+        <a href="zvals/basic_structure.html">基础结构</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content" role="main">
         
         
-  <section id="zvals">
-<span id="id1"></span><h1>Zvals<a class="headerlink" href="#zvals" title="此标题的永久链接">¶</a></h1>
-<p>In this chapter the <code class="docutils literal notranslate"><span class="pre">zval</span></code> data structure, which is used to represent arbitrary PHP values, is introduced. We
-explain the concepts behind zvals and how to use them in extension code.</p>
-<p>Contents:</p>
+  <section id="zval">
+<span id="zvals"></span><h1>Zval<a class="headerlink" href="#zval" title="此标题的永久链接">¶</a></h1>
+<p>本章介绍了用于表示任意 PHP 值的 <code class="docutils literal notranslate"><span class="pre">zval</span></code> 数据结构。本章解释了 zval 背后的概念以及如何在扩展代码中使用它们。</p>
+<p>目录：</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="zvals/basic_structure.html">Basic structure</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#types-and-values">Types and values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zvals/basic_structure.html">基础结构</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#id2">类型和值</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#the-zval-struct">The zval struct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#access-macros">Access macros</a></li>
 </ul>
@@ -84,7 +83,7 @@ explain the concepts behind zvals and how to use them in extension code.</p>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="zvals/basic_structure.html">Basic structure</a>&#160;&#160;»
+        <a href="zvals/basic_structure.html">基础结构</a>&#160;&#160;»
         </p>
 
       </div>
