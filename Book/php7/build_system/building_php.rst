@@ -38,7 +38,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 获取源代码
 -------------------------
 
-在编译 PHP 之前，首先需要获取源代码。有两种方式：从 `PHP's download page`_ 下载归档文件或从 `Github`_ 克隆 git 存储库。
+在编译 PHP 之前，首先需要获取源代码。有两种方式：从 `PHP 下载页面`_ 下载归档文件或从 `Github`_ 克隆 git 存储库。
 
 两者的构建过程略有不同：git 存储库不捆绑 ``configure`` 脚本，所以需要使用 ``buildconf`` 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。
@@ -53,7 +53,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
     # 开发版本。可以检出到稳定分支：
     ~/php-src> git checkout PHP-8.1
 
-如果对检出有问题，请查看 PHP wiki 上的 `Git FAQ`_。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
+如果对检出有问题，请查看 PHP wiki 上的 `Git 问答`_。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
 PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版本和配置测试扩展或者更改，这非常有用。
 
 进行下一步之前，应该使用包管理器安装一些基本的编译依赖项（默认已经安装了三个）：
@@ -63,72 +63,64 @@ PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版�
 * ``make`` 这是 PHP 使用的编译管理工具。
 * ``autoconf`` 用于生成 ``configure`` 脚本。
 
-  * 2.59 or higher (for PHP 7.0-7.1)
-  * 2.64 or higher (for PHP 7.2)
-  * 2.68 or higher (for PHP 7.3 and higher)
-* ``libtool``, which helps manage shared libraries.
-* ``bison`` which is used to generate the PHP parser.
+  * 2.59 或更高（用于 PHP 7.0-7.1）
+  * 2.64 或更高（用于 PHP 7.2）
+  * 2.68 或更高（用于 PHP 7.3 及其更高）
+* ``libtool``，帮助管理共享库。
+* ``bison`` 用于生成 PHP 解析器。
 
-  * 2.4 or higher (for PHP 7.0-7.3)
-  * 3.0 or higher (for PHP 7.4 and higher)
-* ``re2c``, which is used to generate the PHP lexer.
+  * 2.4 或更高（用于 7.0-7.3）
+  * 3.0 或更高（用于 PHP 7.4 及其更高）
+* ``re2c``，用于生成 PHP 词法分析器。
 
-  * Optional for PHP <= 7.3.
-  * 0.13.4 or higher (for PHP 7.4 and higher)
+  * PHP <= 7.3 时可选
+  * 0.13.4 或更高（用于 PHP 7.4 及其更高）
 
-On Debian/Ubuntu you can install all these with the following command::
+在 Debian/Ubuntu 上，可以使用下列命令安装所有::
 
     ~/php-src> sudo apt-get install build-essential autoconf libtool bison re2c pkg-config
 
-Depending on the extensions that you enable during the ``./configure`` stage PHP will need a number of additional
-libraries. When installing these, check if there is a version of the package ending in ``-dev`` or ``-devel`` and
-install them instead. The packages without ``dev`` typically do not contain necessary header files. For example a
-default PHP build will require libxml and libsqlite3, which you can install via the ``libxml2-dev`` and
-``libsqlite3-dev`` packages.
+根据 ``./configure`` 阶段启用的扩展，PHP 将需要很多额外的库。安装时，将检查是否有 ``-dev`` 或 ``-devel``
+结尾的软件包版本，然后安装它们。没有 ``dev`` 的包通常不包含必要的头文件。例如，默认的 PHP 编译将需要 libxml 和
+libsqlite3，可以通过 ``libxml2-dev`` 和 ``libsqlite3-dev`` 包安装。
 
-.. _PHP's download page: http://www.php.net/downloads.php
+.. _PHP 下载页面: http://www.php.net/downloads.php
 .. _git.php.net: http://git.php.net
 .. _Github: http://www.github.com/php/php-src
-.. _Git FAQ: https://wiki.php.net/vcs/gitfaq
+.. _Git 问答: https://wiki.php.net/vcs/gitfaq
 
 编译概述
 --------------
 
-Before taking a closer look at what the individual build steps do, here are the commands you need to execute for a
-"default" PHP build::
+在仔细研究每个编译步骤的作用之前，这里时需要为“默认”PHP 编译执行的命令::
 
-    ~/php-src> ./buildconf     # only necessary if building from git
+    ~/php-src> ./buildconf     # 只有从 git 编译时才需要
     ~/php-src> ./configure
     ~/php-src> make -jN
 
-For a fast build, replace ``N`` with the number of CPU cores you have available (you can run ``nproc`` to determine
-this).
+为了快速编译，替换 ``N`` 为有效的 CPU 内核数（可以运行 ``nproc`` 来确定）。
 
-By default PHP will build binaries for the CLI and CGI SAPIs, which will be located at ``sapi/cli/php`` and
-``sapi/cgi/php-cgi`` respectively. To check that everything went well, try running ``sapi/cli/php -v``.
+默认 PHP 将为 CLI 和 CGI SAPI 编译二进制文件，分别位于 ``sapi/cli/php`` 和
+``sapi/cgi/php-cgi``。要检查是否一切顺利，请尝试运行 ``sapi/cli/php -v``。
 
-Additionally you can run ``sudo make install`` to install PHP into ``/usr/local``. The target directory can be changed
-by specifying a ``--prefix`` in the configuration stage::
+此外，可以运行 ``sudo make install`` 将 PHP 安装到 ``/usr/local``。可以在配置阶段指定 ``--prefix`` 来更改目标目录::
 
     ~/php-src> ./configure --prefix=$HOME/myphp
     ~/php-src> make -jN
     ~/php-src> make install
 
-Here ``$HOME/myphp`` is the installation location that will be used during the ``make install`` step. Note that
-installing PHP is not necessary, but can be convenient if you want to use your PHP build outside of extension
-development.
+这里的 ``$HOME/myphp`` 时在 ``make install`` 步骤中使用的安装位置。注意，安装 PHP
+不是必需的，但想要在扩展开发之外使用 PHP 编译则可能会很方便。
 
-Now lets take a closer look at the individual build steps!
+现在睁大双眼看每个编译步骤吧！
 
 ``./buildconf`` 脚本
 --------------------------
 
-If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
-script does little more than invoking the ``build/build.mk`` makefile, which in turn calls ``build/build2.mk``.
+如果从 git 存储库编译，第一件事就是运行 ``./buildconf`` 脚本。该脚本只是调用 ``build/build.mk`` makefile，又调用 ``build/build2.mk``。
 
-The main job of these makefiles is to run ``autoconf`` to generate the ``./configure`` script and ``autoheader`` to
-generate the ``main/php_config.h.in`` template. The latter file will be used by configure to generate the final
-configuration header file ``main/php_config.h``.
+这些 makefile 的主要工作是运行 ``autoconf`` 生成 ``./configure`` 脚本和 ``autoheader`` 生成 ``main/php_config.h.in``
+模板。后面的文件会被配置生成最终的配置头文件 ``main/php_config.h``。
 
 Both utilities produce their results from the ``configure.ac`` file (which specifies most of the PHP build process),
 the ``build/php.m4`` file (which specifies a large number of PHP-specific M4 macros) and the ``config.m4`` files of
