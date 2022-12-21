@@ -126,47 +126,37 @@ Both utilities produce their results from the ``configure.ac`` file (which speci
 the ``build/php.m4`` file (which specifies a large number of PHP-specific M4 macros) and the ``config.m4`` files of
 individual extensions and SAPIs (as well as a bunch of other `m4 files <http://www.gnu.org/software/m4/m4.html>`_).
 
-The good news is that writing extensions or even doing core modifications will not require much interaction with the
-build system. You will have to write small ``config.m4`` files later on, but those usually just use two or three of the
-high-level macros that ``build/php.m4`` provides. As such we will not go into further detail here.
+好消息是编写扩展甚至进行核心修改都不需要跟编译系统进行太多交互。稍后需要编写小的 ``config.m4`` 文件，但这些文件通常只使用
+``build/php.m4`` 提供的两到三个高级宏。因此，不会再这里进一步详细介绍。
 
-The ``./buildconf`` script only has two options: ``--debug`` will disable warning suppression when calling autoconf and
-autoheader. Unless you want to work on the buildsystem, this option will be of little interest to you.
+``./buildconf`` 脚本只有两个选项：``--debug`` 将在调用 autoconf 和 autoheader 时禁用警告抑制。除非在编译系统上工作，否则不会对这个选项感兴趣。
 
-The second option is ``--force``, which will allow running ``./buildconf`` in release packages (e.g. if you downloaded
-the packaged source code and want to generate a new ``./configure``) and additionally clear the configuration caches
-``config.cache`` and ``autom4te.cache/``.
+第二个选项是 ``--force``，允许在发行包中运行 ``./buildconf``（例如，下载了打包的源代码并想生成新的
+``./configure``）并另外清除配置缓存 ``config.cache`` 和 ``autom4te.cache/``。
 
-If you update your git repository using ``git pull`` (or some other command) and get weird errors during the ``make``
-step, this usually means that something in the build configuration changed and you need to rerun ``./buildconf``.
+如果使用 ``git pull`` （或其它命令）更新 git 存储库在 ``make`` 阶段出现奇怪的错误，这通常意味着编译配置中的某些内容发生了变化，需要重新运行
+``./buildconf``。
 
 ``./configure`` 脚本
 --------------------------
 
-Once the ``./configure`` script is generated you can make use of it to customize your PHP build. You can list all
-supported options using ``--help``::
+一旦生成了 ``./configure`` ，就可以使用它来自定义 PHP 编译。可以使用 ``--help`` 列出所有支持的选项::
 
     ~/php-src> ./configure --help | less
 
-The first part of the help will list various generic options, which are supported by all autoconf-based configuration
-scripts. One of them is the already mentioned ``--prefix=DIR``, which changes the installation directory used by
-``make install``. Another useful option is ``-C``, which will cache the result of various tests in the ``config.cache``
-file and speed up subsequent ``./configure`` calls. Using this option only makes sense once you already have a working
-build and want to quickly change between different configurations.
+帮助的第一部分将列出各种通用选项，所有基于 autoconf 的配置脚本都支持这些选项。其中一个是已经提到的 ``--prefix=DIR``，用于更改
+``make install`` 的安装目录。另外一个有用的选项是 ``-C``，会将各种测试的结果缓存到 ``config.cache`` 文件中，并加快后续的
+``./configure`` 调用。只有当存在可用的编译并且想要在不同配置间快速切换时，此选项才有意义。
 
-Apart from generic autoconf options there are also many settings specific to PHP. For example, you can choose which
-extensions and SAPIs should be compiled using the ``--enable-NAME`` and ``--disable-NAME`` switches. If the extension or
-SAPI has external dependencies you need to use ``--with-NAME`` and ``--without-NAME`` instead.
+除了通用的 autoconf 选项之外，还有很多特定于 PHP 的选项。例如，使用 ``--enable-NAME`` 和 ``--disable-NAME`` 开关选择编译哪些扩展和
+SAPI。如果扩展或 SAPI 具有外部依赖项，则需要使用 ``--with-NAME`` and ``--without-NAME`` 代替。
 
-If a library needed by ``NAME`` is not located in the default location (e.g. because you compiled it yourself), some
-extensions allow you to specify its location using ``--with-NAME=DIR``. However, since PHP 7.4 most extensions use
-``pkg-config`` instead, in which case passing a directory to ``--with`` has no effect. In this case, it is necessary
-to add the library to the ``PKG_CONFIG_PATH``::
+如果 ``NAME`` 需要的库不在默认位置（例如自己编译的），一些扩展允许使用 ``--with-NAME=DIR`` 指定它的位置。但是，由于 PHP 7.4
+大多数扩展改用 ``pkg-config``，在这种情况下将目录传递给 ``--with`` 没有作用。这时候，需要将库添加到 ``PKG_CONFIG_PATH``::
 
     export PKG_CONFIG_PATH=/path/to/library/lib/pkgconfig:$PKG_CONFIG_PATH
 
-By default PHP will build the CLI and CGI SAPIs, as well as a number of extensions. You can find out which extensions
-your PHP binary contains using the ``-m`` option. For a default PHP 7.0 build the result will look as follows:
+PHP 默认将编译 CLI 和 CGI SAPI，以及一些扩展。可以使用 ``-m`` 选项找出 PHP 二进制文件包含哪些扩展。对于默认编译的 PHP 7.0，结果将如下所示：
 
 .. code-block:: none
 
@@ -198,24 +188,19 @@ your PHP binary contains using the ``-m`` option. For a default PHP 7.0 build th
     xmlreader
     xmlwriter
 
-If you now wanted to stop compiling the CGI SAPI, as well as the *tokenizer* and *sqlite3* extensions and instead enable
-*opcache* and *gmp*, the corresponding configure command would be::
+如果想现在停止编译 CGI SAPI 以及 *tokenizer* 和 *sqlite3* 扩展，而是启用 *opcache* 和 *gmp*，相应的配置命令是::
 
     ~/php-src> ./configure --disable-cgi --disable-tokenizer --without-sqlite3 \
                            --enable-opcache --with-gmp
 
-By default most extensions will be compiled statically, i.e. they will be part of the resulting binary. Only the opcache
-extension is shared by default, i.e. it will generate an ``opcache.so`` shared object in the ``modules/`` directory. You
-can compile other extensions into shared objects as well by writing ``--enable-NAME=shared`` or ``--with-NAME=shared``
-(but not all extensions support this). We'll talk about how to make use of shared extensions in the next section.
+默认大部分扩展将被静态编译，即它们将成为生成二进制文件的一部分。默认仅共享 opcache
+扩展，即将在 ``modules/`` 目录中生成 ``opcache.so`` 共享对象。可以通过编写 ``--enable-NAME=shared`` 或 ``--with-NAME=shared``
+将其它扩展编译为共享对象（并非所有扩展都支持）。下一节会讨论如何使用共享扩展。
 
-To find out which switch you need to use and whether an extension is enabled by default, check ``./configure --help``.
-If the switch is either ``--enable-NAME`` or ``--with-NAME`` it means that the extension is not compiled by default and
-needs to be explicitly enabled. ``--disable-NAME`` or ``--without-NAME`` on the other hand indicate an extension that
-is compiled by default, but can be explicitly disabled.
+要了解需要使用哪种开关以及默认情况下是否启用扩展，请查看 ``./configure --help``。如果开关是 ``--enable-NAME`` 或 ``--with-NAME``
+意味着默认不编译扩展，需要手动启用。``--disable-NAME`` 或 ``--without-NAME`` 另一方面表示扩展默认编译，但可以手动禁用。
 
-Some extensions are always compiled and can not be disabled. To create a build that only contains the minimal amount of
-extensions use the ``--disable-all`` option::
+一些扩展始终编译且不能禁用。使用 ``--disable-all`` 选项创建仅包含最少量扩展的编译::
 
     ~/php-src> ./configure --disable-all && make -jN
     ~/php-src> sapi/cli/php -m
@@ -229,9 +214,8 @@ extensions use the ``--disable-all`` option::
     SPL
     standard
 
-The ``--disable-all`` option is very useful if you want a fast build and don't need much functionality (e.g. when
-implementing language changes). For the smallest possible build you can additionally specify the ``--disable-cgi``
-switch, so only the CLI binary is generated.
+``--disable-all`` 选项对想要快速编译且不需要太多功能时非常有用（例如，实现语言更改）。对于尽可能下的编译，可以额外指定 ``--disable-cgi``
+开关，只生成 CLI 二进制文件。
 
 There are three more switches, which you should usually specify when developing extensions or working on PHP:
 
