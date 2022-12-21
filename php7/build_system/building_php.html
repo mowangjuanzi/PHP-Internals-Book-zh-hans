@@ -144,41 +144,31 @@ libsqlite3，可以通过 <code class="docutils literal notranslate"><span class
 <p>Both utilities produce their results from the <code class="docutils literal notranslate"><span class="pre">configure.ac</span></code> file (which specifies most of the PHP build process),
 the <code class="docutils literal notranslate"><span class="pre">build/php.m4</span></code> file (which specifies a large number of PHP-specific M4 macros) and the <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> files of
 individual extensions and SAPIs (as well as a bunch of other <a class="reference external" href="http://www.gnu.org/software/m4/m4.html">m4 files</a>).</p>
-<p>The good news is that writing extensions or even doing core modifications will not require much interaction with the
-build system. You will have to write small <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> files later on, but those usually just use two or three of the
-high-level macros that <code class="docutils literal notranslate"><span class="pre">build/php.m4</span></code> provides. As such we will not go into further detail here.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> script only has two options: <code class="docutils literal notranslate"><span class="pre">--debug</span></code> will disable warning suppression when calling autoconf and
-autoheader. Unless you want to work on the buildsystem, this option will be of little interest to you.</p>
-<p>The second option is <code class="docutils literal notranslate"><span class="pre">--force</span></code>, which will allow running <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> in release packages (e.g. if you downloaded
-the packaged source code and want to generate a new <code class="docutils literal notranslate"><span class="pre">./configure</span></code>) and additionally clear the configuration caches
-<code class="docutils literal notranslate"><span class="pre">config.cache</span></code> and <code class="docutils literal notranslate"><span class="pre">autom4te.cache/</span></code>.</p>
-<p>If you update your git repository using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> (or some other command) and get weird errors during the <code class="docutils literal notranslate"><span class="pre">make</span></code>
-step, this usually means that something in the build configuration changed and you need to rerun <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code>.</p>
+<p>好消息是编写扩展甚至进行核心修改都不需要跟编译系统进行太多交互。稍后需要编写小的 <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> 文件，但这些文件通常只使用
+<code class="docutils literal notranslate"><span class="pre">build/php.m4</span></code> 提供的两到三个高级宏。因此，不会再这里进一步详细介绍。</p>
+<p><code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本只有两个选项：<code class="docutils literal notranslate"><span class="pre">--debug</span></code> 将在调用 autoconf 和 autoheader 时禁用警告抑制。除非在编译系统上工作，否则不会对这个选项感兴趣。</p>
+<p>第二个选项是 <code class="docutils literal notranslate"><span class="pre">--force</span></code>，允许在发行包中运行 <code class="docutils literal notranslate"><span class="pre">./buildconf``（例如，下载了打包的源代码并想生成新的</span>
+<span class="pre">``./configure</span></code>）并另外清除配置缓存 <code class="docutils literal notranslate"><span class="pre">config.cache</span></code> 和 <code class="docutils literal notranslate"><span class="pre">autom4te.cache/</span></code>。</p>
+<p>如果使用 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> （或其它命令）更新 git 存储库在 <code class="docutils literal notranslate"><span class="pre">make</span></code> 阶段出现奇怪的错误，这通常意味着编译配置中的某些内容发生了变化，需要重新运行
+<code class="docutils literal notranslate"><span class="pre">./buildconf</span></code>。</p>
 </section>
 <section id="configure">
 <h2><code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本<a class="headerlink" href="#configure" title="此标题的永久链接">¶</a></h2>
-<p>Once the <code class="docutils literal notranslate"><span class="pre">./configure</span></code> script is generated you can make use of it to customize your PHP build. You can list all
-supported options using <code class="docutils literal notranslate"><span class="pre">--help</span></code>:</p>
+<p>一旦生成了 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> ，就可以使用它来自定义 PHP 编译。可以使用 <code class="docutils literal notranslate"><span class="pre">--help</span></code> 列出所有支持的选项:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --help <span class="p">|</span> less
 </pre></div>
 </div>
-<p>The first part of the help will list various generic options, which are supported by all autoconf-based configuration
-scripts. One of them is the already mentioned <code class="docutils literal notranslate"><span class="pre">--prefix=DIR</span></code>, which changes the installation directory used by
-<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>. Another useful option is <code class="docutils literal notranslate"><span class="pre">-C</span></code>, which will cache the result of various tests in the <code class="docutils literal notranslate"><span class="pre">config.cache</span></code>
-file and speed up subsequent <code class="docutils literal notranslate"><span class="pre">./configure</span></code> calls. Using this option only makes sense once you already have a working
-build and want to quickly change between different configurations.</p>
-<p>Apart from generic autoconf options there are also many settings specific to PHP. For example, you can choose which
-extensions and SAPIs should be compiled using the <code class="docutils literal notranslate"><span class="pre">--enable-NAME</span></code> and <code class="docutils literal notranslate"><span class="pre">--disable-NAME</span></code> switches. If the extension or
-SAPI has external dependencies you need to use <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code> and <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> instead.</p>
-<p>If a library needed by <code class="docutils literal notranslate"><span class="pre">NAME</span></code> is not located in the default location (e.g. because you compiled it yourself), some
-extensions allow you to specify its location using <code class="docutils literal notranslate"><span class="pre">--with-NAME=DIR</span></code>. However, since PHP 7.4 most extensions use
-<code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> instead, in which case passing a directory to <code class="docutils literal notranslate"><span class="pre">--with</span></code> has no effect. In this case, it is necessary
-to add the library to the <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code>:</p>
+<p>帮助的第一部分将列出各种通用选项，所有基于 autoconf 的配置脚本都支持这些选项。其中一个是已经提到的 <code class="docutils literal notranslate"><span class="pre">--prefix=DIR</span></code>，用于更改
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 的安装目录。另外一个有用的选项是 <code class="docutils literal notranslate"><span class="pre">-C</span></code>，会将各种测试的结果缓存到 <code class="docutils literal notranslate"><span class="pre">config.cache</span></code> 文件中，并加快后续的
+<code class="docutils literal notranslate"><span class="pre">./configure</span></code> 调用。只有当存在可用的编译并且想要在不同配置间快速切换时，此选项才有意义。</p>
+<p>除了通用的 autoconf 选项之外，还有很多特定于 PHP 的选项。例如，使用 <code class="docutils literal notranslate"><span class="pre">--enable-NAME</span></code> 和 <code class="docutils literal notranslate"><span class="pre">--disable-NAME</span></code> 开关选择编译哪些扩展和
+SAPI。如果扩展或 SAPI 具有外部依赖项，则需要使用 <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code> and <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> 代替。</p>
+<p>如果 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> 需要的库不在默认位置（例如自己编译的），一些扩展允许使用 <code class="docutils literal notranslate"><span class="pre">--with-NAME=DIR</span></code> 指定它的位置。但是，由于 PHP 7.4
+大多数扩展改用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code>，在这种情况下将目录传递给 <code class="docutils literal notranslate"><span class="pre">--with</span></code> 没有作用。这时候，需要将库添加到 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/library/lib/pkgconfig:<span class="nv">$PKG_CONFIG_PATH</span>
 </pre></div>
 </div>
-<p>By default PHP will build the CLI and CGI SAPIs, as well as a number of extensions. You can find out which extensions
-your PHP binary contains using the <code class="docutils literal notranslate"><span class="pre">-m</span></code> option. For a default PHP 7.0 build the result will look as follows:</p>
+<p>PHP 默认将编译 CLI 和 CGI SAPI，以及一些扩展。可以使用 <code class="docutils literal notranslate"><span class="pre">-m</span></code> 选项找出 PHP 二进制文件包含哪些扩展。对于默认编译的 PHP 7.0，结果将如下所示：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sapi/cli/php -m
 [PHP Modules]
 Core
@@ -208,22 +198,17 @@ xmlreader
 xmlwriter
 </pre></div>
 </div>
-<p>If you now wanted to stop compiling the CGI SAPI, as well as the <em>tokenizer</em> and <em>sqlite3</em> extensions and instead enable
-<em>opcache</em> and <em>gmp</em>, the corresponding configure command would be:</p>
+<p>如果想现在停止编译 CGI SAPI 以及 <em>tokenizer</em> 和 <em>sqlite3</em> 扩展，而是启用 <em>opcache</em> 和 <em>gmp</em>，相应的配置命令是:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --disable-cgi --disable-tokenizer --without-sqlite3 <span class="se">\</span>
                        --enable-opcache --with-gmp
 </pre></div>
 </div>
-<p>By default most extensions will be compiled statically, i.e. they will be part of the resulting binary. Only the opcache
-extension is shared by default, i.e. it will generate an <code class="docutils literal notranslate"><span class="pre">opcache.so</span></code> shared object in the <code class="docutils literal notranslate"><span class="pre">modules/</span></code> directory. You
-can compile other extensions into shared objects as well by writing <code class="docutils literal notranslate"><span class="pre">--enable-NAME=shared</span></code> or <code class="docutils literal notranslate"><span class="pre">--with-NAME=shared</span></code>
-(but not all extensions support this). We’ll talk about how to make use of shared extensions in the next section.</p>
-<p>To find out which switch you need to use and whether an extension is enabled by default, check <code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--help</span></code>.
-If the switch is either <code class="docutils literal notranslate"><span class="pre">--enable-NAME</span></code> or <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code> it means that the extension is not compiled by default and
-needs to be explicitly enabled. <code class="docutils literal notranslate"><span class="pre">--disable-NAME</span></code> or <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> on the other hand indicate an extension that
-is compiled by default, but can be explicitly disabled.</p>
-<p>Some extensions are always compiled and can not be disabled. To create a build that only contains the minimal amount of
-extensions use the <code class="docutils literal notranslate"><span class="pre">--disable-all</span></code> option:</p>
+<p>默认大部分扩展将被静态编译，即它们将成为生成二进制文件的一部分。默认仅共享 opcache
+扩展，即将在 <code class="docutils literal notranslate"><span class="pre">modules/</span></code> 目录中生成 <code class="docutils literal notranslate"><span class="pre">opcache.so</span></code> 共享对象。可以通过编写 <code class="docutils literal notranslate"><span class="pre">--enable-NAME=shared</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--with-NAME=shared</span></code>
+将其它扩展编译为共享对象（并非所有扩展都支持）。下一节会讨论如何使用共享扩展。</p>
+<p>要了解需要使用哪种开关以及默认情况下是否启用扩展，请查看 <code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--help</span></code>。如果开关是 <code class="docutils literal notranslate"><span class="pre">--enable-NAME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code>
+意味着默认不编译扩展，需要手动启用。<code class="docutils literal notranslate"><span class="pre">--disable-NAME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> 另一方面表示扩展默认编译，但可以手动禁用。</p>
+<p>一些扩展始终编译且不能禁用。使用 <code class="docutils literal notranslate"><span class="pre">--disable-all</span></code> 选项创建仅包含最少量扩展的编译:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --disable-all <span class="o">&amp;&amp;</span> make -jN
 ~/php-src&gt; sapi/cli/php -m
 <span class="o">[</span>PHP Modules<span class="o">]</span>
@@ -237,9 +222,8 @@ SPL
 standard
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--disable-all</span></code> option is very useful if you want a fast build and don’t need much functionality (e.g. when
-implementing language changes). For the smallest possible build you can additionally specify the <code class="docutils literal notranslate"><span class="pre">--disable-cgi</span></code>
-switch, so only the CLI binary is generated.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--disable-all</span></code> 选项对想要快速编译且不需要太多功能时非常有用（例如，实现语言更改）。对于尽可能下的编译，可以额外指定 <code class="docutils literal notranslate"><span class="pre">--disable-cgi</span></code>
+开关，只生成 CLI 二进制文件。</p>
 <p>There are three more switches, which you should usually specify when developing extensions or working on PHP:</p>
 <p><code class="docutils literal notranslate"><span class="pre">--enable-debug</span></code> enables debug mode, which has multiple effects: Compilation will run with <code class="docutils literal notranslate"><span class="pre">-g</span></code> to generate debug
 symbols and additionally use the lowest optimization level <code class="docutils literal notranslate"><span class="pre">-O0</span></code>. This will make PHP a lot slower, but make debugging
