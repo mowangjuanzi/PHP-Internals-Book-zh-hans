@@ -11,12 +11,10 @@
     <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
+    <link rel="canonical" href="phpinternals.kuphp.co/php7/build_system/building_php.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="Building PHP extensions" href="building_extensions.html" />
@@ -72,11 +70,11 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。</p>
 <p>建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。</p>
 <p>在终端中克隆存储库，运行下列命令:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~&gt; git clone https://github.com/php/php-src.git
-~&gt; <span class="nb">cd</span> php-src
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~&gt;<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/php/php-src.git
+~&gt;<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>php-src
 <span class="c1"># 默认是 master 分支，这是当前</span>
 <span class="c1"># 开发版本。可以检出到稳定分支：</span>
-~/php-src&gt; git checkout PHP-8.1
+~/php-src&gt;<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>PHP-8.1
 </pre></div>
 </div>
 <p>如果对检出有问题，请查看 PHP wiki 上的 <a class="reference external" href="https://wiki.php.net/vcs/gitfaq">Git 问答</a>。如果想对 PHP 本身做贡献，Git FAQ 还解释了如何设置 git。另外还包含为多个
@@ -108,7 +106,7 @@ PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版�
 </li>
 </ul>
 <p>在 Debian/Ubuntu 上，可以使用下列命令安装所有:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sudo apt-get install build-essential autoconf libtool bison re2c pkg-config
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>autoconf<span class="w"> </span>libtool<span class="w"> </span>bison<span class="w"> </span>re2c<span class="w"> </span>pkg-config
 </pre></div>
 </div>
 <p>根据 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 阶段启用的扩展，PHP 将需要很多额外的库。安装时，将检查是否有 <code class="docutils literal notranslate"><span class="pre">-dev</span></code> 或 <code class="docutils literal notranslate"><span class="pre">-devel</span></code>
@@ -118,18 +116,18 @@ libsqlite3，可以通过 <code class="docutils literal notranslate"><span class
 <section id="id7">
 <h2>编译概述<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h2>
 <p>在仔细研究每个编译步骤的作用之前，这里时需要为“默认”PHP 编译执行的命令:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./buildconf     <span class="c1"># 只有从 git 编译时才需要</span>
-~/php-src&gt; ./configure
-~/php-src&gt; make -jN
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./buildconf<span class="w">     </span><span class="c1"># 只有从 git 编译时才需要</span>
+~/php-src&gt;<span class="w"> </span>./configure
+~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN
 </pre></div>
 </div>
 <p>为了快速编译，替换 <code class="docutils literal notranslate"><span class="pre">N</span></code> 为有效的 CPU 内核数（可以运行 <code class="docutils literal notranslate"><span class="pre">nproc</span></code> 来确定）。</p>
 <p>默认 PHP 将为 CLI 和 CGI SAPI 编译二进制文件，分别位于 <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> 和
 <code class="docutils literal notranslate"><span class="pre">sapi/cgi/php-cgi</span></code>。要检查是否一切顺利，请尝试运行 <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span> <span class="pre">-v</span></code>。</p>
 <p>此外，可以运行 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></code> 将 PHP 安装到 <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>。可以在配置阶段指定 <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> 来更改目标目录:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/myphp
-~/php-src&gt; make -jN
-~/php-src&gt; make install
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--prefix<span class="o">=</span><span class="nv">$HOME</span>/myphp
+~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN
+~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>install
 </pre></div>
 </div>
 <p>这里的 <code class="docutils literal notranslate"><span class="pre">$HOME/myphp</span></code> 时在 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 步骤中使用的安装位置。注意，安装 PHP
@@ -155,7 +153,7 @@ individual extensions and SAPIs (as well as a bunch of other <a class="reference
 <section id="configure">
 <h2><code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本<a class="headerlink" href="#configure" title="此标题的永久链接">¶</a></h2>
 <p>一旦生成了 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> ，就可以使用它来自定义 PHP 编译。可以使用 <code class="docutils literal notranslate"><span class="pre">--help</span></code> 列出所有支持的选项:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --help <span class="p">|</span> less
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
 </pre></div>
 </div>
 <p>帮助的第一部分将列出各种通用选项，所有基于 autoconf 的配置脚本都支持这些选项。其中一个是已经提到的 <code class="docutils literal notranslate"><span class="pre">--prefix=DIR</span></code>，用于更改
@@ -165,7 +163,7 @@ individual extensions and SAPIs (as well as a bunch of other <a class="reference
 SAPI。如果扩展或 SAPI 具有外部依赖项，则需要使用 <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code> and <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> 代替。</p>
 <p>如果 <code class="docutils literal notranslate"><span class="pre">NAME</span></code> 需要的库不在默认位置（例如自己编译的），一些扩展允许使用 <code class="docutils literal notranslate"><span class="pre">--with-NAME=DIR</span></code> 指定它的位置。但是，由于 PHP 7.4
 大多数扩展改用 <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code>，在这种情况下将目录传递给 <code class="docutils literal notranslate"><span class="pre">--with</span></code> 没有作用。这时候，需要将库添加到 <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/library/lib/pkgconfig:<span class="nv">$PKG_CONFIG_PATH</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/library/lib/pkgconfig:<span class="nv">$PKG_CONFIG_PATH</span>
 </pre></div>
 </div>
 <p>PHP 默认将编译 CLI 和 CGI SAPI，以及一些扩展。可以使用 <code class="docutils literal notranslate"><span class="pre">-m</span></code> 选项找出 PHP 二进制文件包含哪些扩展。对于默认编译的 PHP 7.0，结果将如下所示：</p>
@@ -199,8 +197,8 @@ xmlwriter
 </pre></div>
 </div>
 <p>如果想现在停止编译 CGI SAPI 以及 <em>tokenizer</em> 和 <em>sqlite3</em> 扩展，而是启用 <em>opcache</em> 和 <em>gmp</em>，相应的配置命令是:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --disable-cgi --disable-tokenizer --without-sqlite3 <span class="se">\</span>
-                       --enable-opcache --with-gmp
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--disable-cgi<span class="w"> </span>--disable-tokenizer<span class="w"> </span>--without-sqlite3<span class="w"> </span><span class="se">\</span>
+<span class="w">                       </span>--enable-opcache<span class="w"> </span>--with-gmp
 </pre></div>
 </div>
 <p>默认大部分扩展将被静态编译，即它们将成为生成二进制文件的一部分。默认仅共享 opcache
@@ -209,9 +207,9 @@ xmlwriter
 <p>要了解需要使用哪种开关以及默认情况下是否启用扩展，请查看 <code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--help</span></code>。如果开关是 <code class="docutils literal notranslate"><span class="pre">--enable-NAME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--with-NAME</span></code>
 意味着默认不编译扩展，需要手动启用。<code class="docutils literal notranslate"><span class="pre">--disable-NAME</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--without-NAME</span></code> 另一方面表示扩展默认编译，但可以手动禁用。</p>
 <p>一些扩展始终编译且不能禁用。使用 <code class="docutils literal notranslate"><span class="pre">--disable-all</span></code> 选项创建仅包含最少量扩展的编译:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --disable-all <span class="o">&amp;&amp;</span> make -jN
-~/php-src&gt; sapi/cli/php -m
-<span class="o">[</span>PHP Modules<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--disable-all<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>-jN
+~/php-src&gt;<span class="w"> </span>sapi/cli/php<span class="w"> </span>-m
+<span class="o">[</span>PHP<span class="w"> </span>Modules<span class="o">]</span>
 Core
 date
 <span class="nb">hash</span>
@@ -259,7 +257,7 @@ provides many more options, which you’ll find described in the help.</p>
 <p>Apart from passing options to configure, you can also specify a number of environment variables. Some of the more
 important ones are documented at the end of the configure help output (<code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--help</span> <span class="pre">|</span> <span class="pre">tail</span> <span class="pre">-25</span></code>).</p>
 <p>For example you can use <code class="docutils literal notranslate"><span class="pre">CC</span></code> to use a different compiler and <code class="docutils literal notranslate"><span class="pre">CFLAGS</span></code> to change the used compilation flags:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; ./configure --disable-all <span class="nv">CC</span><span class="o">=</span>clang <span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-O3 -march=native&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--disable-all<span class="w"> </span><span class="nv">CC</span><span class="o">=</span>clang<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-O3 -march=native&quot;</span>
 </pre></div>
 </div>
 <p>In this configuration the build will make use of clang (instead of gcc) and use a very high optimization level
@@ -274,7 +272,7 @@ and undefined behavior at runtime:</p>
 <section id="make-make-install">
 <h2><code class="docutils literal notranslate"><span class="pre">make</span></code> 和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code><a class="headerlink" href="#make-make-install" title="此标题的永久链接">¶</a></h2>
 <p>After everything is configured, you can use <code class="docutils literal notranslate"><span class="pre">make</span></code> to perform the actual compilation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; make -jN    <span class="c1"># where N is the number of cores</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN<span class="w">    </span><span class="c1"># where N is the number of cores</span>
 </pre></div>
 </div>
 <p>The main result of this operation will be PHP binaries for the enabled SAPIs (by default <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> and
@@ -398,17 +396,17 @@ of the PHP source tree. As a default build is run against more than 10000 (less 
 you enable additional extensions) this can take several minutes.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> command internally invokes the <code class="docutils literal notranslate"><span class="pre">run-tests.php</span></code> file using your CLI binary. For more control, it is
 recommended to invoke <code class="docutils literal notranslate"><span class="pre">run-tests.php</span></code> directly. For example, this will allow you to enable the parallel test runner:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sapi/cli/php run-tests.php -jN
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>sapi/cli/php<span class="w"> </span>run-tests.php<span class="w"> </span>-jN
 </pre></div>
 </div>
 <p>Test parallelism is only available as of PHP 7.4. On earlier PHP versions parallelism is not available, and it is
 necessary to additionally pass the <code class="docutils literal notranslate"><span class="pre">-P</span></code> option:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sapi/cli/php run-tests.php -P
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>sapi/cli/php<span class="w"> </span>run-tests.php<span class="w"> </span>-P
 </pre></div>
 </div>
 <p>Instead of running the whole test suite, you can also limit it to certain directories by passing them as arguments to
 <code class="docutils literal notranslate"><span class="pre">run-tests.php</span></code>. E.g. to test only the Zend engine, the reflection extension and the array functions:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; sapi/cli/php run-tests.php -jN Zend/ ext/reflection/ ext/standard/tests/array/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>sapi/cli/php<span class="w"> </span>run-tests.php<span class="w"> </span>-jN<span class="w"> </span>Zend/<span class="w"> </span>ext/reflection/<span class="w"> </span>ext/standard/tests/array/
 </pre></div>
 </div>
 <p>This is very useful, because it allows you to quickly run only the parts of the test suite that are relevant to your
@@ -428,7 +426,7 @@ equivalent to running under valgrind, but with much better performance.</p></li>
 <p>You don’t need to explicitly use <code class="docutils literal notranslate"><span class="pre">run-tests.php</span></code> to pass options or limit directories. Instead you can use the
 <code class="docutils literal notranslate"><span class="pre">TESTS</span></code> variable to pass additional arguments via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>. E.g. the equivalent of the previous command would
 be:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; make <span class="nb">test</span> <span class="nv">TESTS</span><span class="o">=</span><span class="s2">&quot;-jN Zend/ ext/reflection/ ext/standard/tests/array/&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="nv">TESTS</span><span class="o">=</span><span class="s2">&quot;-jN Zend/ ext/reflection/ ext/standard/tests/array/&quot;</span>
 </pre></div>
 </div>
 <p>We will take a more detailed look at the <code class="docutils literal notranslate"><span class="pre">run-tests.php</span></code> system later, in particular also talk about how to write your
@@ -452,10 +450,10 @@ you do the modification yourself, you will likely remember to run the command, b
 <p>If you encounter any odd compilation problems that are not resolved by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>, chances are that running
 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> will fix the issue. To avoid typing out the previous <code class="docutils literal notranslate"><span class="pre">./configure</span></code> options afterwards, you can make
 use of the <code class="docutils literal notranslate"><span class="pre">./config.nice</span></code> script (which contains your last <code class="docutils literal notranslate"><span class="pre">./configure</span></code> call):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt; make clean
-~/php-src&gt; ./buildconf --force
-~/php-src&gt; ./config.nice
-~/php-src&gt; make -jN
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>clean
+~/php-src&gt;<span class="w"> </span>./buildconf<span class="w"> </span>--force
+~/php-src&gt;<span class="w"> </span>./config.nice
+~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN
 </pre></div>
 </div>
 <p>One last cleaning script that PHP provides is <code class="docutils literal notranslate"><span class="pre">./vcsclean</span></code>. This will only work if you checked out the source code
