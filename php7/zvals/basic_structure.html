@@ -101,7 +101,7 @@ The details of this format won’t be discussed here, but you should at least be
 limited precision and commonly doesn’t store the exact value you want.</p>
 <p>The remaining four types will only be mentioned here quickly and discussed in greater detail in their own chapters:</p>
 <p>Strings (<code class="docutils literal notranslate"><span class="pre">IS_STRING</span></code>) are stored in a <code class="docutils literal notranslate"><span class="pre">zend_string</span></code> structure, which combines the string length and the string
-constants in a single allocation. You will find more information about the <code class="docutils literal notranslate"><span class="pre">zend_string</span></code> structure and its
+contents in a single allocation. You will find more information about the <code class="docutils literal notranslate"><span class="pre">zend_string</span></code> structure and its
 dedicated API in the <a class="reference internal" href="../internal_types/strings.html"><span class="doc">string</span></a> chapter.</p>
 <p>Arrays use the <code class="docutils literal notranslate"><span class="pre">IS_ARRAY</span></code> type tag and are stored in the <code class="docutils literal notranslate"><span class="pre">zend_array</span> <span class="pre">*arr</span></code> member. How the <code class="docutils literal notranslate"><span class="pre">HashTable</span></code> structure
 works will be discussed in the <a class="reference internal" href="../internal_types/hashtables.html"><span class="doc">Hashtables</span></a> chapter.</p>
