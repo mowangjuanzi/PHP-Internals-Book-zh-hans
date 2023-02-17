@@ -120,7 +120,7 @@ html_theme = 'haiku'
 html_title = 'PHP 内幕'
 
 # 中文版单独加的，跟 sphinx.ext.githubpages 配合生成 CNAME
-html_baseurl = "phpinternals.kuphp.co"
+html_baseurl = "https://phpinternal.kuphp.co"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None

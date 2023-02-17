@@ -39,3 +39,8 @@ jobs:
         with:
           folder: BookHTML
           branch: gh-pages
+          clean: false
+          clean-exclude: |
+            .ssh
+            .git
+            .github
