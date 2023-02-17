@@ -1,8 +1,6 @@
 序言
 ============
 
-| `原文：290b1a14099efa7b202b24985782fc364733a3e2 <https://github.com/phpinternalsbook/PHP-Internals-Book/blob/master/Book/php7/introduction.rst>`_
-
 本书由几位 PHP 开发者协同合作，旨在更好的记录和描述 PHP 如何内部工作。
 
 本书有三个主要目标：
@@ -24,7 +22,7 @@
 
 我们也强烈推荐你一些书。你将会学习如何高效使用 C 语言以及如何将其转换为高效的 CPU 指令，以便设计出强大、快速、可靠和安全的程序。
 
-* C程序设计语言（Ritchie & Kernighan）
+* C 程序设计语言（Ritchie & Kernighan）
 * Advanced Topics in C Core Concepts in Data Structures
 * Learn C the Hard Way
 * The Art of Debugging with GDB DDD and Eclipse
