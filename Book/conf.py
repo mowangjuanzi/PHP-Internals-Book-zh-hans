@@ -32,7 +32,7 @@ lexers['php-annotations'] = PhpLexer(startinline=True)
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo', 'sphinx.ext.ifconfig']
+extensions = ['sphinx.ext.todo', 'sphinx.ext.ifconfig', 'sphinx.ext.githubpages']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -118,6 +118,9 @@ html_theme = 'haiku'
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 html_title = 'PHP 内幕'
+
+# 中文版单独加的，跟 sphinx.ext.githubpages 配合生成 CNAME
+html_baseurl = "phpinternals.kuphp.co"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
