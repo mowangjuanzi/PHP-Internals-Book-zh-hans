@@ -217,24 +217,18 @@ PHP 默认将编译 CLI 和 CGI SAPI，以及一些扩展。可以使用 ``-m`` 
 ``--disable-all`` 选项对想要快速编译且不需要太多功能时非常有用（例如，实现语言更改）。对于尽可能下的编译，可以额外指定 ``--disable-cgi``
 开关，只生成 CLI 二进制文件。
 
-There are three more switches, which you should usually specify when developing extensions or working on PHP:
+还有另外三个开关，通常应该在开发扩展或使用 PHP 时指定它们：
 
-``--enable-debug`` enables debug mode, which has multiple effects: Compilation will run with ``-g`` to generate debug
-symbols and additionally use the lowest optimization level ``-O0``. This will make PHP a lot slower, but make debugging
-with tools like ``gdb`` more predictable. Furthermore debug mode defines the ``ZEND_DEBUG`` macro, which will enable
-the use of assertions and enable various debugging helpers in the engine. Among other things memory leaks, as well as
-incorrect use of some data structures, will be reported. It is possible to enable debug assertions without disabling
-optimizations by using ``--enable-debug-assertions`` instead.
+``--enable-debug`` 启用调试模式，有多种效果：运行编译时将使用 ``-g`` 生成调试符号，并额外使用最低优化级别 ``-O0``。这会使 PHP
+变慢很多，但可以使使用 ``gdb`` 等工具进行调试更容易预测。此外，调试模式定义了 ``ZEND_DEBUG`` 宏，它将启用断言并在引擎中启用各种调试助手。除了报告内存泄漏以外，还会报告某些没有正确使用的数据结构。通过使用
+``--enable-debug-assertions`` 可以在不禁用优化的情况下启用调试断言。
 
-``--enable-zts`` (or ``--enable-maintainer-zts`` before PHP 8.0) enables thread-safety. This switch will define the
-``ZTS`` macro, which in turn will enable the whole TSRM (thread-safe resource manager) machinery used by PHP. Since
-PHP 7 having this switch continuously enabled is much less important than on previous versions. It is primarily
-important to make sure you included all the necessary boilerplate code. If you need more information about thread
-safety and global memory management in PHP, you should read :doc:`the globals management chapter <../extensions_design/globals_management>`
+``--enable-zts`` （PHP 8.0 之前为 ``--enable-maintainer-zts``）启用线程安全。这个开关将定义 ``ZTS`` 宏，它反过来将使 PHP 启用完整
+TSRM（线程安全资源管理器）机制。自 PHP 7 起，持续启用此开关的重要性要比之前的版本低得多。确保包含所有必要的样板代码非常重要。如果需要有关
+PHP 的线程安全和全局内存管理的更多信息，应该阅读:doc:`全局管理章节 <../extensions_design/globals_management>`
 
-``--enable-werror`` (since PHP 7.4) enables the ``-Werror`` compiler flag, which will promote compiler warnings to
-errors. Enabling this flag ensures that the PHP build remains warning free. However, generated warnings depend on the
-used compiler, version and optimization options, so some compilers may not be usable with option.
+``--enable-werror`` （自 PHP 7.4 起）启用 ``-Werror`` 编译器 flag，这会使编译器警告升级为错误。启用此 flag 可确保 PHP
+编译时保持无警告。但是，生成的警告取决于使用的编译器、版本和优化选项，因此某些编译器可能无法使用此选项。
 
 On the other hand you should not use the ``--enable-debug`` option if you want to perform performance benchmarks for
 your code. ``--enable-zts`` can also negatively impact runtime performance.
