@@ -1,8 +1,6 @@
 目录
 =================
 
-| `原文：9a2d1a1084af9c444da6a90eed44e2ae05682f22 <https://github.com/phpinternalsbook/PHP-Internals-Book/blob/master/Book/index.rst>`_
-
 PHP 7 和 PHP 8
 ---------------
 
