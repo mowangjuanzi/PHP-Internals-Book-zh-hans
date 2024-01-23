@@ -1,4 +1,4 @@
-Internal types
+内部类型
 ==============
 
 In this chapter we will detail the special types used internally by PHP.

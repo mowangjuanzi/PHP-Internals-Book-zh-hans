@@ -1,28 +1,27 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Extensions design &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/translations.js"></script>
+    <title>扩展设计 &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css?v=38da9290" />
+    <script src="../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/extensions_design.html" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Learning the PHP lifecycle" href="extensions_design/php_lifecycle.html" />
+    <link rel="next" title="学习 PHP 生命周期" href="extensions_design/php_lifecycle.html" />
     <link rel="prev" title="Object handlers" href="classes_objects/object_handlers.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Extensions design</span></h2>
+        <h2 class="heading"><span>扩展设计</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
@@ -31,15 +30,15 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a>&#160;&#160;»
+        <a href="extensions_design/php_lifecycle.html">学习 PHP 生命周期</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content" role="main">
         
         
-  <section id="extensions-design">
-<h1>Extensions design<a class="headerlink" href="#extensions-design" title="此标题的永久链接">¶</a></h1>
+  <section id="id1">
+<h1>扩展设计<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>In this chapter you’ll learn how to design PHP extensions. You’ll learn about the PHP lifecycle, how and when to manage
 memory, the different hooks you can use or the different function pointers you can replace to actively change PHP’s
 internal machinery. You’ll design PHP functions and classes to provide them through your extension, and you’ll play
@@ -47,13 +46,13 @@ with INI settings.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_lifecycle.html">学习 PHP 生命周期</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#the-parallelism-models">The parallelism models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#the-php-extensions-hooks">The PHP extensions hooks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_lifecycle.html#hooking-by-overwriting-function-pointers">Hooking by overwriting function pointers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_skeleton.html">A look into a PHP extension and extension skeleton</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_skeleton.html">研究 PHP 扩展和扩展骨架</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#how-the-engine-loads-extensions">How the engine loads extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#what-is-a-php-extension">What is a PHP extension ?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#generating-extension-skeleton-with-scripts">Generating extension skeleton with scripts</a></li>
@@ -61,7 +60,7 @@ with INI settings.</p>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_skeleton.html#publishing-api">Publishing API</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_functions.html">Registering and using PHP functions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/php_functions.html">注册和使用 PHP 函数</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#zend-function-entry-structure">zend_function_entry structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#registering-php-functions">Registering PHP functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#declaring-function-arguments">Declaring function arguments</a></li>
@@ -72,17 +71,17 @@ with INI settings.</p>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/php_functions.html#managing-references">Managing references</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/globals_management.html">Managing global state</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/globals_management.html">管理全局状态</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/globals_management.html#managing-request-globals">Managing request globals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/globals_management.html#using-true-globals">Using true globals</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_infos.html">Publishing extension information</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/extension_infos.html">发布扩展信息</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_infos.html#minfo-hook">MINFO() hook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/extension_infos.html#a-note-about-the-reflection-api">A note about the Reflection API</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/hooks.html">Hooks provided by PHP</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/hooks.html">PHP 提供的钩子</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#hooking-into-the-execution-of-functions">Hooking into the execution of functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#overwriting-an-internal-function">Overwriting an Internal Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#modifying-the-abstract-syntax-tree-ast">Modifying the Abstract Syntax Tree (AST)</a></li>
@@ -95,7 +94,7 @@ with INI settings.</p>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/hooks.html#replacing-opcode-handlers">Replacing Opcode Handlers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/ini_settings.html">Declaring and using INI settings</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/ini_settings.html">声明和使用 INI 设置</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#reminders-on-ini-settings">Reminders on INI settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#zoom-on-ini-settings">Zoom on INI settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#registering-and-using-ini-entries">Registering and using INI entries</a></li>
@@ -103,7 +102,7 @@ with INI settings.</p>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/ini_settings.html#using-a-displayer">Using a displayer</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="extensions_design/zend_extensions.html">Zend Extensions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="extensions_design/zend_extensions.html">Zend 扩展</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#on-differences-between-php-and-zend-extensions">On differences between PHP and Zend extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#what-is-a-zend-extension">What is a Zend extension ?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extensions_design/zend_extensions.html#why-need-a-zend-extension">Why need a Zend extension ?</a></li>
@@ -126,7 +125,7 @@ with INI settings.</p>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a>&#160;&#160;»
+        <a href="extensions_design/php_lifecycle.html">学习 PHP 生命周期</a>&#160;&#160;»
         </p>
 
       </div>

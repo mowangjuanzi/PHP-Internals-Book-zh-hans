@@ -1,4 +1,4 @@
-Memory management
+内存管理
 =================
 
 C programmers usually have to deal with memory by hand. With dynamic memory, the programmer allocates memory when

@@ -1,28 +1,27 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Memory management &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <title>内存管理 &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/zvals/memory_management.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="References" href="references.html" />
+    <link rel="next" title="引用" href="references.html" />
     <link rel="prev" title="基础结构" href="basic_structure.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Memory management</span></h2>
+        <h2 class="heading"><span>内存管理</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
@@ -31,20 +30,20 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="references.html">References</a>&#160;&#160;»
+        <a href="references.html">引用</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content" role="main">
         
         
-  <section id="memory-management">
-<h1>Memory management<a class="headerlink" href="#memory-management" title="此标题的永久链接">¶</a></h1>
+  <section id="id1">
+<h1>内存管理<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>To work with zvals correctly and efficiently, it is important to understand how their memory management works. Broadly,
 we can classify values into two categories: Simple values like integers, which are stored directly inside the zval, and
 complex values like strings, for which the zval only stores a pointer to a separate structure.</p>
-<section id="reference-counted-values">
-<span id="refcounting"></span><h2>Reference-counted values<a class="headerlink" href="#reference-counted-values" title="此标题的永久链接">¶</a></h2>
+<section id="refcounting">
+<span id="id2"></span><h2>引用计数值<a class="headerlink" href="#refcounting" title="Link to this heading">¶</a></h2>
 <p>All complex values share a common header with the following structure:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_zend_refcounted_h</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">refcount</span><span class="p">;</span>
@@ -83,7 +82,7 @@ and if it reaches zero, destroy it. For example, the following code is perfectly
 <code class="docutils literal notranslate"><span class="pre">zend_string_release()</span></code> call will not destroy it. It will only get destroyed once the array is destroyed as well and
 no references to the string remain.</p>
 <section id="immutable-values">
-<h3>Immutable values<a class="headerlink" href="#immutable-values" title="此标题的永久链接">¶</a></h3>
+<h3>Immutable values<a class="headerlink" href="#immutable-values" title="Link to this heading">¶</a></h3>
 <p>While all complex structures share the <code class="docutils literal notranslate"><span class="pre">zend_refcounted_h</span></code> header, the refcount is not always actually used. Strings
 and arrays can be immutable, which means that the entire structure, including the reference count, must never be
 modified. Such structures can be reused without incrementing the reference count and are guaranteed to not be destroyed
@@ -153,7 +152,7 @@ structures. You’ll encounter more examples like <code class="docutils literal 
 the same.</p>
 </section>
 <section id="persistent-structures">
-<h3>Persistent structures<a class="headerlink" href="#persistent-structures" title="此标题的永久链接">¶</a></h3>
+<h3>Persistent structures<a class="headerlink" href="#persistent-structures" title="Link to this heading">¶</a></h3>
 <p>PHP makes use of two allocators: The per-request allocator, which releases all memory at the end of a request, and the
 persistent allocator, which retains allocations across multiple requests. The persistent allocator is effectively
 the same as the normal system allocator. See the <a class="reference internal" href="../extensions_design/php_lifecycle.html#php-lifecycle"><span class="std std-ref">PHP Lifecycle</span></a> and <a class="reference internal" href="../memory_management/zend_memory_manager.html#zend-mm"><span class="std std-ref">Zend Memory Manager</span></a> chapters for
@@ -176,8 +175,8 @@ typically affects strings, in which case they can be made immutable through inte
 anything beyond disabling the <code class="docutils literal notranslate"><span class="pre">ZEND_RC_DEBUG</span></code> verification.</p>
 </section>
 </section>
-<section id="zval-memory-management">
-<h2>Zval memory management<a class="headerlink" href="#zval-memory-management" title="此标题的永久链接">¶</a></h2>
+<section id="zval">
+<h2>Zval 内存管理<a class="headerlink" href="#zval" title="Link to this heading">¶</a></h2>
 <p>With the preliminaries out of the way, we can discuss how memory management interacts with zvals. Refcounted
 structures can be used independently, but storing them inside zvals is certainly one of the more common use-cases.</p>
 <p>Zvals themselves are never individually heap-allocated. They are either allocated temporarily on the stack, or
@@ -238,7 +237,7 @@ which only increments the refcount for refcounted structures.</p>
 As a very rough rule of thumb, array values expect the refcount to be incremented by the caller, while most other
 APIs will take care of it themselves.</p>
 <section id="copying-zvals">
-<h3>Copying zvals<a class="headerlink" href="#copying-zvals" title="此标题的永久链接">¶</a></h3>
+<h3>Copying zvals<a class="headerlink" href="#copying-zvals" title="Link to this heading">¶</a></h3>
 <p>It is common that zvals need to be copied from one location to another. For this purpose, a number of copying macros
 are provided. The first is <code class="docutils literal notranslate"><span class="pre">ZVAL_COPY_VALUE()</span></code>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">init_zval_indirect</span><span class="p">(</span><span class="n">zval</span><span class="w"> </span><span class="o">*</span><span class="n">retval</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -296,7 +295,7 @@ it would not be thread-safe. This macro will increment the refcount on non-persi
 string/array duplication for persistent values.</p>
 </section>
 <section id="destroying-zvals">
-<h3>Destroying zvals<a class="headerlink" href="#destroying-zvals" title="此标题的永久链接">¶</a></h3>
+<h3>Destroying zvals<a class="headerlink" href="#destroying-zvals" title="Link to this heading">¶</a></h3>
 <p>The above examples have already been making use of <code class="docutils literal notranslate"><span class="pre">zval_ptr_dtor()</span></code> to destroy zvals. If the value is refcounted,
 this function decrements the refcount and destroys the value when it reaches zero.</p>
 <p>However, there is one subtlety here: Reference counting is not sufficient to detect unused values that are part
@@ -310,7 +309,7 @@ use if you know that the destroyed data is non-circular. <code class="docutils l
 have both inlined and outlined variants.</p>
 </section>
 <section id="initializing-zvals">
-<span id="id1"></span><h3>Initializing zvals<a class="headerlink" href="#initializing-zvals" title="此标题的永久链接">¶</a></h3>
+<span id="id3"></span><h3>Initializing zvals<a class="headerlink" href="#initializing-zvals" title="Link to this heading">¶</a></h3>
 <p>Until now, we have been using an abstract <code class="docutils literal notranslate"><span class="pre">init_zval()</span></code> function that <em>somehow</em> initializes a zval. It will not
 come as a surprise that PHP handles zval initialization using a plethora of macros. The initialization of simple
 types is especially straightforward:</p>
@@ -410,7 +409,7 @@ to create an object from scratch. This will covered in a later chapter on object
 </div>
 </section>
 <section id="separating-zvals">
-<h3>Separating zvals<a class="headerlink" href="#separating-zvals" title="此标题的永久链接">¶</a></h3>
+<h3>Separating zvals<a class="headerlink" href="#separating-zvals" title="Link to this heading">¶</a></h3>
 <p>In PHP, all values follow by-value semantics by default. This means that if you write <code class="docutils literal notranslate"><span class="pre">$a</span> <span class="pre">=</span> <span class="pre">$b</span></code>, then modification
 of <code class="docutils literal notranslate"><span class="pre">$a</span></code> will have no effect on <code class="docutils literal notranslate"><span class="pre">$b</span></code> and vice versa. At the same time, <code class="docutils literal notranslate"><span class="pre">$a</span> <span class="pre">=</span> <span class="pre">$b</span></code> is essentially implemented as:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">zval_ptr_dtor</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
@@ -455,7 +454,7 @@ directly precedes a modification, and you need to know the zval type to perform 
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="references.html">References</a>&#160;&#160;»
+        <a href="references.html">引用</a>&#160;&#160;»
         </p>
 
       </div>

@@ -1,4 +1,4 @@
-Registering and using PHP functions
+注册和使用 PHP 函数
 ===================================
 
 The main goal of a PHP extension is to register new PHP functions for userland. PHP functions are complex to fully

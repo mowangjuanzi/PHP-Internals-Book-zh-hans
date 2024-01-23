@@ -1,4 +1,4 @@
-HashTables: zend_array
+散列表：zend_array
 =======================
 
 

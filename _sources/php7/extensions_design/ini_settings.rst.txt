@@ -1,4 +1,4 @@
-Declaring and using INI settings
+声明和使用 INI 设置
 ================================
 
 This chapter details how PHP plays with its configuration and how an extension is expected to hook into the main

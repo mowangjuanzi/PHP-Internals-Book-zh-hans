@@ -1,24 +1,23 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Zval &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css?v=38da9290" />
+    <script src="../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/zvals.html" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="基础结构" href="zvals/basic_structure.html" />
-    <link rel="prev" title="Building PHP extensions" href="build_system/building_extensions.html" /> 
+    <link rel="prev" title="编译 PHP 扩展" href="build_system/building_extensions.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>PHP 内幕</span></a></h1>
@@ -27,7 +26,7 @@
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="build_system/building_extensions.html">Building PHP extensions</a>
+        «&#160;&#160;<a href="build_system/building_extensions.html">编译 PHP 扩展</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
@@ -39,26 +38,26 @@
         
         
   <section id="zval">
-<span id="zvals"></span><h1>Zval<a class="headerlink" href="#zval" title="此标题的永久链接">¶</a></h1>
+<span id="zvals"></span><h1>Zval<a class="headerlink" href="#zval" title="Link to this heading">¶</a></h1>
 <p>本章介绍了用于表示任意 PHP 值的 <code class="docutils literal notranslate"><span class="pre">zval</span></code> 数据结构。本章解释了 zval 背后的概念以及如何在扩展代码中使用它们。</p>
 <p>目录：</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="zvals/basic_structure.html">基础结构</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#id2">类型和值</a></li>
-<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#the-zval-struct">The zval struct</a></li>
-<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#access-macros">Access macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#zval">zval 结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zvals/basic_structure.html#id3">访问宏</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="zvals/memory_management.html">Memory management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="zvals/memory_management.html#reference-counted-values">Reference-counted values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="zvals/memory_management.html#zval-memory-management">Zval memory management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zvals/memory_management.html">内存管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zvals/memory_management.html#refcounting">引用计数值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zvals/memory_management.html#zval">Zval 内存管理</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="zvals/references.html">References</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="zvals/references.html#reference-semantics">Reference semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zvals/references.html">引用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zvals/references.html#id2">引用语义</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zvals/references.html#representation">Representation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="zvals/references.html#initializing-references">Initializing references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zvals/references.html#id3">初始化引用</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zvals/references.html#dereferencing-and-unwrapping">Dereferencing and unwrapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zvals/references.html#indirect-zvals">Indirect zvals</a></li>
 </ul>
@@ -77,7 +76,7 @@
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="build_system/building_extensions.html">Building PHP extensions</a>
+        «&#160;&#160;<a href="build_system/building_extensions.html">编译 PHP 扩展</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;

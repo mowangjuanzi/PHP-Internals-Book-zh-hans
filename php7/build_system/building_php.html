@@ -1,23 +1,22 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>编译 PHP &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/build_system/building_php.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Building PHP extensions" href="building_extensions.html" />
+    <link rel="next" title="编译 PHP 扩展" href="building_extensions.html" />
     <link rel="prev" title="使用 PHP 编译系统" href="../build_system.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
@@ -31,7 +30,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="building_extensions.html">Building PHP extensions</a>&#160;&#160;»
+        <a href="building_extensions.html">编译 PHP 扩展</a>&#160;&#160;»
         </p>
 
       </div>
@@ -39,18 +38,18 @@
         
         
   <section id="php">
-<span id="building-php"></span><h1>编译 PHP<a class="headerlink" href="#php" title="此标题的永久链接">¶</a></h1>
+<span id="building-php"></span><h1>编译 PHP<a class="headerlink" href="#php" title="Link to this heading">¶</a></h1>
 <p>本章解释了如何以适合扩展开发和核心修改的方式编译 PHP。 我们只涵盖了类 UNIX 系统。如果想要在 Windows 中编译 PHP，应该查看 PHP WIKI
 中的 <a class="reference external" href="https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2">step-by-step build instructions</a> <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>。</p>
 <p>本章还概述了 PHP 构建系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="note">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>免责声明：对尝试在 Windows 上编译 PHP 造成的任何不良健康影响，我们概不负责。</p>
 </aside>
 </aside>
 <section id="id4">
-<h2>为什么不使用包？<a class="headerlink" href="#id4" title="此标题的永久链接">¶</a></h2>
+<h2>为什么不使用包？<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>如果你当前正在使用 PHP，可能会使用 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">php</span></code> 之类的命令通过包管理器安装
 PHP。在解释实际的编译之前，应该首先了解为什么需要自己编译，而不能只使用预编译的。原因有很多：</p>
 <p>首先，预编译包只会提供生成的二进制文件，但会缺少编译扩展必需的其它内容，比如：头文件。这可以通过安装开发包（通常称为
@@ -64,7 +63,7 @@ PHP。在解释实际的编译之前，应该首先了解为什么需要自己�
 bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始终使用官方 PHP 版本。当我们在本书中谈论“PHP”时，始终说的是官方支持的版本。</p>
 </section>
 <section id="id5">
-<h2>获取源代码<a class="headerlink" href="#id5" title="此标题的永久链接">¶</a></h2>
+<h2>获取源代码<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>在编译 PHP 之前，首先需要获取源代码。有两种方式：从 <a class="reference external" href="http://www.php.net/downloads.php">PHP 下载页面</a> 下载归档文件或从 <a class="reference external" href="http://www.github.com/php/php-src">Github</a> 克隆 git 存储库。</p>
 <p>两者的构建过程略有不同：git 存储库不捆绑 <code class="docutils literal notranslate"><span class="pre">configure</span></code> 脚本，所以需要使用 <code class="docutils literal notranslate"><span class="pre">buildconf</span></code> 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。</p>
@@ -114,7 +113,7 @@ PHP 版本设置多个工作目录的说明。如果需要针对多个 PHP 版�
 libsqlite3，可以通过 <code class="docutils literal notranslate"><span class="pre">libxml2-dev</span></code> 和 <code class="docutils literal notranslate"><span class="pre">libsqlite3-dev</span></code> 包安装。</p>
 </section>
 <section id="id7">
-<h2>编译概述<a class="headerlink" href="#id7" title="此标题的永久链接">¶</a></h2>
+<h2>编译概述<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
 <p>在仔细研究每个编译步骤的作用之前，这里时需要为“默认”PHP 编译执行的命令:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./buildconf<span class="w">     </span><span class="c1"># 只有从 git 编译时才需要</span>
 ~/php-src&gt;<span class="w"> </span>./configure
@@ -135,7 +134,7 @@ libsqlite3，可以通过 <code class="docutils literal notranslate"><span class
 <p>现在睁大双眼看每个编译步骤吧！</p>
 </section>
 <section id="buildconf">
-<h2><code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本<a class="headerlink" href="#buildconf" title="此标题的永久链接">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本<a class="headerlink" href="#buildconf" title="Link to this heading">¶</a></h2>
 <p>如果从 git 存储库编译，第一件事就是运行 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 脚本。该脚本只是调用 <code class="docutils literal notranslate"><span class="pre">build/build.mk</span></code> makefile，又调用 <code class="docutils literal notranslate"><span class="pre">build/build2.mk</span></code>。</p>
 <p>这些 makefile 的主要工作是运行 <code class="docutils literal notranslate"><span class="pre">autoconf</span></code> 生成 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本和 <code class="docutils literal notranslate"><span class="pre">autoheader</span></code> 生成 <code class="docutils literal notranslate"><span class="pre">main/php_config.h.in</span></code>
 模板。后面的文件会被配置生成最终的配置头文件 <code class="docutils literal notranslate"><span class="pre">main/php_config.h</span></code>。</p>
@@ -151,7 +150,7 @@ individual extensions and SAPIs (as well as a bunch of other <a class="reference
 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code>。</p>
 </section>
 <section id="configure">
-<h2><code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本<a class="headerlink" href="#configure" title="此标题的永久链接">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">./configure</span></code> 脚本<a class="headerlink" href="#configure" title="Link to this heading">¶</a></h2>
 <p>一旦生成了 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> ，就可以使用它来自定义 PHP 编译。可以使用 <code class="docutils literal notranslate"><span class="pre">--help</span></code> 列出所有支持的选项:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>./configure<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
 </pre></div>
@@ -264,7 +263,7 @@ and undefined behavior at runtime:</p>
 <p>These options only work reliably since PHP 7.4 and will significantly slow down the generated PHP binary.</p>
 </section>
 <section id="make-make-install">
-<h2><code class="docutils literal notranslate"><span class="pre">make</span></code> 和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code><a class="headerlink" href="#make-make-install" title="此标题的永久链接">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">make</span></code> 和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code><a class="headerlink" href="#make-make-install" title="Link to this heading">¶</a></h2>
 <p>After everything is configured, you can use <code class="docutils literal notranslate"><span class="pre">make</span></code> to perform the actual compilation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN<span class="w">    </span><span class="c1"># where N is the number of cores</span>
 </pre></div>
@@ -379,7 +378,7 @@ about your build, e.g. your configure options or the default extension directory
 <code class="docutils literal notranslate"><span class="pre">./php</span> <span class="pre">-i</span></code> (phpinfo), but <code class="docutils literal notranslate"><span class="pre">php-config</span></code> provides it in a simpler form (which can be easily used by automated tools).</p>
 </section>
 <section id="id8">
-<h2>运行测试套件<a class="headerlink" href="#id8" title="此标题的永久链接">¶</a></h2>
+<h2>运行测试套件<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
 <p>If the <code class="docutils literal notranslate"><span class="pre">make</span></code> command finishes successfully, it will print a message encouraging you to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Build complete.
 Don&#39;t forget to run &#39;make test&#39;
@@ -427,7 +426,7 @@ be:</p>
 own tests and how to debug test failures. <a class="reference internal" href="../../tests/introduction.html"><span class="doc">See the dedicated tests chapter</span></a>.</p>
 </section>
 <section id="make-clean">
-<h2>修复编译问题和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code><a class="headerlink" href="#make-clean" title="此标题的永久链接">¶</a></h2>
+<h2>修复编译问题和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code><a class="headerlink" href="#make-clean" title="Link to this heading">¶</a></h2>
 <p>As you may know <code class="docutils literal notranslate"><span class="pre">make</span></code> performs an incremental build, i.e. it will not recompile all files, but only those <code class="docutils literal notranslate"><span class="pre">.c</span></code>
 files that changed since the last invocation. This is a great way to shorten build times, but it doesn’t always work
 well: For example, if you modify a structure in a header file, <code class="docutils literal notranslate"><span class="pre">make</span></code> will not automatically recompile all <code class="docutils literal notranslate"><span class="pre">.c</span></code>
@@ -465,7 +464,7 @@ directories that are ignored by git. You should use this with care.</p>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="building_extensions.html">Building PHP extensions</a>&#160;&#160;»
+        <a href="building_extensions.html">编译 PHP 扩展</a>&#160;&#160;»
         </p>
 
       </div>

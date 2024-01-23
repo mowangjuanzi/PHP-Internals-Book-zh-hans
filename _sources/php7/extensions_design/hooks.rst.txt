@@ -1,4 +1,4 @@
-Hooks provided by PHP
+PHP 提供的钩子
 =====================
 
 PHP and the Zend Engine provide many different hooks for extensions that allow

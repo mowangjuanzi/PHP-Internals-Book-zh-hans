@@ -1,23 +1,22 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>基础结构 &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/zvals/basic_structure.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="Memory management" href="memory_management.html" />
+    <link rel="next" title="内存管理" href="memory_management.html" />
     <link rel="prev" title="Zval" href="../zvals.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
@@ -31,7 +30,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="memory_management.html">Memory management</a>&#160;&#160;»
+        <a href="memory_management.html">内存管理</a>&#160;&#160;»
         </p>
 
       </div>
@@ -39,10 +38,10 @@
         
         
   <section id="id1">
-<h1>基础结构<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h1>
+<h1>基础结构<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>zval（“Zend value”的缩写）表示任意 PHP 值。因此它是所有 PHP 中最重要的结构并且将经常使用它。本节介绍 zval 背后的基本概念及其使用。</p>
 <section id="id2">
-<h2>类型和值<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h2>
+<h2>类型和值<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>Among other things, every zval stores some value and the type this value has. This is necessary because PHP is a
 dynamically typed language and as such variable types are only known at run-time and not at compile-time. Furthermore,
 the type can change during the life of a zval, so if the zval previously stored an integer it may contain a string at a
@@ -106,7 +105,7 @@ dedicated API in the <a class="reference internal" href="../internal_types/strin
 <p>Arrays use the <code class="docutils literal notranslate"><span class="pre">IS_ARRAY</span></code> type tag and are stored in the <code class="docutils literal notranslate"><span class="pre">zend_array</span> <span class="pre">*arr</span></code> member. How the <code class="docutils literal notranslate"><span class="pre">HashTable</span></code> structure
 works will be discussed in the <a class="reference internal" href="../internal_types/hashtables.html"><span class="doc">Hashtables</span></a> chapter.</p>
 <p>Objects (<code class="docutils literal notranslate"><span class="pre">IS_OBJECT</span></code>) use the <code class="docutils literal notranslate"><span class="pre">zend_object</span> <span class="pre">*obj</span></code> member. PHP’s class and object system will be described in the
-<span class="xref std std-doc">objects</span> chapter.</p>
+<a class="reference internal" href="../classes_objects.html"><span class="doc">objects</span></a> chapter.</p>
 <p>Resources (<code class="docutils literal notranslate"><span class="pre">IS_RESOURCE</span></code>) are use the <code class="docutils literal notranslate"><span class="pre">zend_resource</span> <span class="pre">*res</span></code> member. Resources are covered in the
 <a class="reference internal" href="../internal_types/zend_resources.html"><span class="doc">Resources</span></a> chapter.</p>
 <p>To summarize, here’s a table with all the available “normal” type tags and the corresponding storage location for
@@ -145,7 +144,7 @@ their values:</p>
 </tbody>
 </table>
 <section id="special-types">
-<h3>Special types<a class="headerlink" href="#special-types" title="此标题的永久链接">¶</a></h3>
+<h3>Special types<a class="headerlink" href="#special-types" title="Link to this heading">¶</a></h3>
 <p>There are a number of additional types that do not have a directly corresponding userland type, and are only used
 internally. Of these, <code class="docutils literal notranslate"><span class="pre">IS_UNDEF</span></code> and <code class="docutils literal notranslate"><span class="pre">IS_REFERENCE</span></code> are the only types you will encounter routinely.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">IS_UNDEF</span></code> type is used to indicate an uninitialized zval. This type tag has a value of zero, so zeroing out
@@ -167,8 +166,8 @@ only accept zvals, such as hashtable values.</p>
 serve the same purpose as <code class="docutils literal notranslate"><span class="pre">ptr</span></code>.</p>
 </section>
 </section>
-<section id="the-zval-struct">
-<h2>The zval struct<a class="headerlink" href="#the-zval-struct" title="此标题的永久链接">¶</a></h2>
+<section id="zval">
+<h2>zval 结构<a class="headerlink" href="#zval" title="Link to this heading">¶</a></h2>
 <p>Let’s now have a look at how the <code class="docutils literal notranslate"><span class="pre">zval</span></code> struct actually looks like:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">_zval_struct</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">zend_value</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
@@ -215,8 +214,8 @@ usages as well. It should be noted that standard zval macros will never modify o
 However, use of this field is only possible in very specific circumstances, as PHP will usually assume that it is
 zero.</p>
 </section>
-<section id="access-macros">
-<h2>Access macros<a class="headerlink" href="#access-macros" title="此标题的永久链接">¶</a></h2>
+<section id="id3">
+<h2>访问宏<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>Knowing the zval structure you can now write code making use of it:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">zval</span><span class="w"> </span><span class="o">*</span><span class="n">zv_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="cm">/* ... get zval from somewhere */</span><span class="p">;</span>
 
@@ -406,7 +405,7 @@ the implementation.</p>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
-        <a href="memory_management.html">Memory management</a>&#160;&#160;»
+        <a href="memory_management.html">内存管理</a>&#160;&#160;»
         </p>
 
       </div>

@@ -1,11 +1,11 @@
-References
+引用
 ==========
 
 PHP references (in the sense of the ``&`` symbol) are mostly transparent to userland code, but require consistent
 special handling in the implementation. This chapter discusses how references are represented, and how internal code
 should deal with them.
 
-Reference semantics
+引用语义
 -------------------
 
 Before going into the internal representation of PHP references, it may be helpful to clarify some common
@@ -85,7 +85,7 @@ that use the reference. Macros like ``ZEND_REF_HAS_TYPE_SOURCES()``, ``ZEND_REF_
 ``ZEND_REF_DEL_TYPE_SOURCE()`` are used to manage this source list, but typically only engine code needs to deal with
 this.
 
-Initializing references
+初始化引用
 -----------------------
 
 Just like other zvals, references are initialized through a set of macros. The most basic one accepts an already

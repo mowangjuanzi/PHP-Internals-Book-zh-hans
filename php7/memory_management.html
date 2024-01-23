@@ -1,33 +1,32 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Memory management &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/translations.js"></script>
+    <title>内存管理 &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css?v=38da9290" />
+    <script src="../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/memory_management.html" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Zend Memory Manager" href="memory_management/zend_memory_manager.html" />
-    <link rel="prev" title="Zend Extensions" href="extensions_design/zend_extensions.html" /> 
+    <link rel="prev" title="Zend 扩展" href="extensions_design/zend_extensions.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Memory management</span></h2>
+        <h2 class="heading"><span>内存管理</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="extensions_design/zend_extensions.html">Zend Extensions</a>
+        «&#160;&#160;<a href="extensions_design/zend_extensions.html">Zend 扩展</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
@@ -38,8 +37,8 @@
       <div class="content" role="main">
         
         
-  <section id="memory-management">
-<h1>Memory management<a class="headerlink" href="#memory-management" title="此标题的永久链接">¶</a></h1>
+  <section id="id1">
+<h1>内存管理<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>C programmers usually have to deal with memory by hand. With dynamic memory, the programmer allocates memory when
 needing and frees it when finished. Failing to free dynamic memory leads to a “memory leak”, which may or may not be a
 bad thing. In the case of PHP, as the process could live for a virtually infinite amount of time, creating a memory leak
@@ -68,7 +67,9 @@ dynamic memory), and about libc’s allocator.</p>
 <li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#the-two-main-kind-of-dynamic-memory-pools-in-php">The two main kind of dynamic memory pools in PHP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#zend-memory-manager-api">Zend Memory Manager API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#zend-memory-manager-debugging-shields">Zend Memory Manager debugging shields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#lifecycle">Lifecycle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#zendmm-internal-design">ZendMM internal design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#hooking-into-the-zendmm">Hooking into the ZendMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory_management/zend_memory_manager.html#common-errors-and-mistakes">Common errors and mistakes</a></li>
 </ul>
 </li>
@@ -89,7 +90,7 @@ dynamic memory), and about libc’s allocator.</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="extensions_design/zend_extensions.html">Zend Extensions</a>
+        «&#160;&#160;<a href="extensions_design/zend_extensions.html">Zend 扩展</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">目录</a>
         &#160;&#160;::&#160;&#160;

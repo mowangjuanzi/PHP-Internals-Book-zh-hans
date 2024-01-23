@@ -1,4 +1,4 @@
-Functions
+函数
 ========================
 
 The body of PHP functions are represented with the ``zend_function`` structure.

@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Casts and operations &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php5/zvals/casts_and_operations.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
@@ -39,9 +38,9 @@
         
         
   <section id="casts-and-operations">
-<h1>Casts and operations<a class="headerlink" href="#casts-and-operations" title="此标题的永久链接">¶</a></h1>
+<h1>Casts and operations<a class="headerlink" href="#casts-and-operations" title="Link to this heading">¶</a></h1>
 <section id="basic-operations">
-<h2>Basic operations<a class="headerlink" href="#basic-operations" title="此标题的永久链接">¶</a></h2>
+<h2>Basic operations<a class="headerlink" href="#basic-operations" title="Link to this heading">¶</a></h2>
 <p>As zvals are complex structures you can’t directly perform basic operations like <code class="docutils literal notranslate"><span class="pre">zv1</span> <span class="pre">+</span> <span class="pre">zv2</span></code> on them. Doing something
 like this will either give you an error or end up adding together two pointers rather than their values.</p>
 <p>The “basic” operations like <code class="docutils literal notranslate"><span class="pre">+</span></code> are rather complicated when working with zvals, because they have to work across
@@ -131,7 +130,7 @@ different from performing a <code class="docutils literal notranslate"><span cla
 <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> will result in <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, but adding <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span> <span class="pre">+</span> <span class="pre">1</span></code> will result in <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </section>
 <section id="comparisons">
-<h2>Comparisons<a class="headerlink" href="#comparisons" title="此标题的永久链接">¶</a></h2>
+<h2>Comparisons<a class="headerlink" href="#comparisons" title="Link to this heading">¶</a></h2>
 <p>The comparison functions introduced above all perform some specific operation, e.g. <code class="docutils literal notranslate"><span class="pre">is_equal_function()</span></code> corresponds
 to <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">is_smaller_function()</span></code> performs a <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>. An alternative to these is <code class="docutils literal notranslate"><span class="pre">compare_function()</span></code> which
 computes a more generic result:</p>
@@ -184,7 +183,7 @@ if <code class="docutils literal notranslate"><span class="pre">HAVE_STRCOLL</sp
 As with anything related to locales, it’s best to avoid its use.</p>
 </section>
 <section id="casts">
-<h2>Casts<a class="headerlink" href="#casts" title="此标题的永久链接">¶</a></h2>
+<h2>Casts<a class="headerlink" href="#casts" title="Link to this heading">¶</a></h2>
 <p>When implementing your own code you will very often deal with only one particular type of zval. E.g. if you are
 implementing some string handling code, you’ll want to deal only with string zvals and not bother with everything else.
 On the other hand you likely also want to support PHPs dynamic type system: PHP allows you to work with numbers as

@@ -82,7 +82,7 @@ Arrays use the ``IS_ARRAY`` type tag and are stored in the ``zend_array *arr`` m
 works will be discussed in the :doc:`Hashtables <../internal_types/hashtables>` chapter.
 
 Objects (``IS_OBJECT``) use the ``zend_object *obj`` member. PHP's class and object system will be described in the
-:doc:`objects <../internal_types/objects>` chapter.
+:doc:`objects <../classes_objects>` chapter.
 
 Resources (``IS_RESOURCE``) are use the ``zend_resource *res`` member. Resources are covered in the
 :doc:`Resources <../internal_types/zend_resources>` chapter.
@@ -142,7 +142,7 @@ only accept zvals, such as hashtable values.
 The ``zend_class_entry *ce`` and ``zend_function *func`` members just specify a more precise type, but otherwise
 serve the same purpose as ``ptr``.
 
-The zval struct
+zval 结构
 ---------------
 
 Let's now have a look at how the ``zval`` struct actually looks like::
@@ -195,7 +195,7 @@ The ``u1.v.u.extra`` field that is part of the type is very rarely used to also 
 However, use of this field is only possible in very specific circumstances, as PHP will usually assume that it is
 zero.
 
-Access macros
+访问宏
 -------------
 
 Knowing the zval structure you can now write code making use of it::

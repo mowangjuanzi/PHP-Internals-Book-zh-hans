@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>使用 PHP 编译系统 &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/style.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../_static/style.css?v=38da9290" />
+    <script src="../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/build_system.html" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
@@ -39,7 +38,7 @@
         
         
   <section id="php">
-<h1>使用 PHP 编译系统<a class="headerlink" href="#php" title="此标题的永久链接">¶</a></h1>
+<h1>使用 PHP 编译系统<a class="headerlink" href="#php" title="Link to this heading">¶</a></h1>
 <p>本章我们将会解释如何使用 PHP 编译系统编译本身及其扩展。本章还不会涉及编写自定义 autoconf 编译指令，而只会解释如何使用工具。</p>
 <p>目录：</p>
 <div class="toctree-wrapper compound">
@@ -55,12 +54,12 @@
 <li class="toctree-l2"><a class="reference internal" href="build_system/building_php.html#make-clean">修复编译问题和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="build_system/building_extensions.html">Building PHP extensions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#loading-shared-extensions">Loading shared extensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#installing-extensions-from-pecl">Installing extensions from PECL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#adding-extensions-to-the-php-source-tree">Adding extensions to the PHP source tree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#building-extensions-using-phpize">Building extensions using <code class="docutils literal notranslate"><span class="pre">phpize</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#displaying-information-about-extensions">Displaying information about extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_system/building_extensions.html">编译 PHP 扩展</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#id1">加载共享扩展</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#pecl">从 PECL 安装扩展</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#id3">添加扩展到 PHP 源代码树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#phpize">使用 <code class="docutils literal notranslate"><span class="pre">phpize</span></code> 编译扩展</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_system/building_extensions.html#id4">展示扩展信息</a></li>
 </ul>
 </li>
 </ul>

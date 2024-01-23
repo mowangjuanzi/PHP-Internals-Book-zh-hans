@@ -1,33 +1,32 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>References &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <title>引用 &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/zvals/references.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="Casts and operations" href="casts_and_operations.html" />
-    <link rel="prev" title="Memory management" href="memory_management.html" /> 
+    <link rel="prev" title="内存管理" href="memory_management.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>References</span></h2>
+        <h2 class="heading"><span>引用</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="memory_management.html">Memory management</a>
+        «&#160;&#160;<a href="memory_management.html">内存管理</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
@@ -38,13 +37,13 @@
       <div class="content" role="main">
         
         
-  <section id="references">
-<h1>References<a class="headerlink" href="#references" title="此标题的永久链接">¶</a></h1>
+  <section id="id1">
+<h1>引用<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>PHP references (in the sense of the <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> symbol) are mostly transparent to userland code, but require consistent
 special handling in the implementation. This chapter discusses how references are represented, and how internal code
 should deal with them.</p>
-<section id="reference-semantics">
-<h2>Reference semantics<a class="headerlink" href="#reference-semantics" title="此标题的永久链接">¶</a></h2>
+<section id="id2">
+<h2>引用语义<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>Before going into the internal representation of PHP references, it may be helpful to clarify some common
 misconceptions about the semantics of references in PHP. Consider this basic example:</p>
 <div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="nv">$a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -78,7 +77,7 @@ cases.</p>
 which means we wouldn’t have a chance to drop the reference even if we wanted to.</p>
 </section>
 <section id="representation">
-<h2>Representation<a class="headerlink" href="#representation" title="此标题的永久链接">¶</a></h2>
+<h2>Representation<a class="headerlink" href="#representation" title="Link to this heading">¶</a></h2>
 <p>References are represented using an <code class="docutils literal notranslate"><span class="pre">IS_REFERENCE</span></code> zval that points to a <code class="docutils literal notranslate"><span class="pre">zend_reference</span></code> structure:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">_zend_reference</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">zend_refcounted_h</span><span class="w">              </span><span class="n">gc</span><span class="p">;</span>
@@ -91,7 +90,7 @@ which means we wouldn’t have a chance to drop the reference even if we wanted 
 represents a reference-counted zval that <em>can</em> be shared. Multiple zvals can point to the same <code class="docutils literal notranslate"><span class="pre">zend_reference</span></code>,
 and any change to the <code class="docutils literal notranslate"><span class="pre">val</span></code> it contains will be observable from all sources.</p>
 <section id="type-sources">
-<h3>Type sources<a class="headerlink" href="#type-sources" title="此标题的永久链接">¶</a></h3>
+<h3>Type sources<a class="headerlink" href="#type-sources" title="Link to this heading">¶</a></h3>
 <p>Normally, PHP does not track who or what makes use of a given reference. The only knowledge that is stored is how many
 users there are (through the refcount), so that the reference may be destroyed in time.</p>
 <p>However, due to the introduction of typed properties in PHP 7.4, we do need to track of which typed properties make
@@ -110,8 +109,8 @@ that use the reference. Macros like <code class="docutils literal notranslate"><
 this.</p>
 </section>
 </section>
-<section id="initializing-references">
-<h2>Initializing references<a class="headerlink" href="#initializing-references" title="此标题的永久链接">¶</a></h2>
+<section id="id3">
+<h2>初始化引用<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>Just like other zvals, references are initialized through a set of macros. The most basic one accepts an already
 created <code class="docutils literal notranslate"><span class="pre">zend_reference</span></code> pointer:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">zval</span><span class="w"> </span><span class="n">ref</span><span class="p">;</span>
@@ -143,7 +142,7 @@ uninitialized:</p>
 reference and set its initial value to the old value of <code class="docutils literal notranslate"><span class="pre">zv</span></code>.</p>
 </section>
 <section id="dereferencing-and-unwrapping">
-<h2>Dereferencing and unwrapping<a class="headerlink" href="#dereferencing-and-unwrapping" title="此标题的永久链接">¶</a></h2>
+<h2>Dereferencing and unwrapping<a class="headerlink" href="#dereferencing-and-unwrapping" title="Link to this heading">¶</a></h2>
 <p>Most code does not want to handle references in any special way, and simply want to look through to the underlying
 value:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">zval</span><span class="w"> </span><span class="o">*</span><span class="n">zv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="cm">/* ... */</span><span class="p">;</span>
@@ -185,7 +184,7 @@ and copy (with refcount increase) the inner value into <code class="docutils lit
 destroy the reference (if it has other users), but will remove one particular use.</p>
 </section>
 <section id="indirect-zvals">
-<h2>Indirect zvals<a class="headerlink" href="#indirect-zvals" title="此标题的永久链接">¶</a></h2>
+<h2>Indirect zvals<a class="headerlink" href="#indirect-zvals" title="Link to this heading">¶</a></h2>
 <p>Next to references, PHP also has a more direct mechanism to share zvals. The <code class="docutils literal notranslate"><span class="pre">IS_INDIRECT</span></code> type stores a direct
 pointer to another zval:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">zval</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span>
@@ -212,7 +211,7 @@ zvals.</p>
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="memory_management.html">Memory management</a>
+        «&#160;&#160;<a href="memory_management.html">内存管理</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;

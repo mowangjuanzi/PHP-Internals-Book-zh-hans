@@ -1,33 +1,32 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Functions &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/translations.js"></script>
+    <title>函数 &#8212; PHP 内幕</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=38da9290" />
+    <script src="../../_static/documentation_options.js?v=f115507d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/php7/internal_types/functions.html" />
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
     <link rel="next" title="PHP Callables" href="functions/callables.html" />
-    <link rel="prev" title="HashTables: zend_array" href="hashtables.html" /> 
+    <link rel="prev" title="散列表：zend_array" href="hashtables.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
           <span>PHP 内幕</span></a></h1>
-        <h2 class="heading"><span>Functions</span></h2>
+        <h2 class="heading"><span>函数</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
       
         <p>
-        «&#160;&#160;<a href="hashtables.html">HashTables: zend_array</a>
+        «&#160;&#160;<a href="hashtables.html">散列表：zend_array</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;
@@ -38,8 +37,8 @@
       <div class="content" role="main">
         
         
-  <section id="functions">
-<h1>Functions<a class="headerlink" href="#functions" title="此标题的永久链接">¶</a></h1>
+  <section id="id1">
+<h1>函数<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>The body of PHP functions are represented with the <code class="docutils literal notranslate"><span class="pre">zend_function</span></code> structure.
 However, handling them is rarely done as they are solely needed for the VM.
 In general PHP <code class="docutils literal notranslate"><span class="pre">callable</span></code> s are what will need to be dealt with, which are represented by the pair of
@@ -62,7 +61,7 @@ In general PHP <code class="docutils literal notranslate"><span class="pre">call
       <div class="bottomnav" role="navigation" aria-label="bottom navigation">
       
         <p>
-        «&#160;&#160;<a href="hashtables.html">HashTables: zend_array</a>
+        «&#160;&#160;<a href="hashtables.html">散列表：zend_array</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../../index.html">目录</a>
         &#160;&#160;::&#160;&#160;

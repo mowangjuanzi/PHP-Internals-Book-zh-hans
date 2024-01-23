@@ -1,19 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+<html lang="zh-CN" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>目录 &#8212; PHP 内幕</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/haiku.css" />
-    <link rel="stylesheet" type="text/css" href="_static/style.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/haiku.css?v=e491ac2d" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css?v=38da9290" />
+    <script src="_static/documentation_options.js?v=f115507d"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
     <link rel="canonical" href="https://phpinternal.kuphp.co/index.html" />
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
@@ -36,9 +35,9 @@
         
         
   <section id="id1">
-<h1>目录<a class="headerlink" href="#id1" title="此标题的永久链接">¶</a></h1>
+<h1>目录<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <section id="php-7-php-8">
-<h2>PHP 7 和 PHP 8<a class="headerlink" href="#php-7-php-8" title="此标题的永久链接">¶</a></h2>
+<h2>PHP 7 和 PHP 8<a class="headerlink" href="#php-7-php-8" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="php7/introduction.html">序言</a></li>
@@ -54,12 +53,12 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_php.html#make-clean">修复编译问题和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/build_system/building_extensions.html">Building PHP extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#loading-shared-extensions">Loading shared extensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#installing-extensions-from-pecl">Installing extensions from PECL</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#adding-extensions-to-the-php-source-tree">Adding extensions to the PHP source tree</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#building-extensions-using-phpize">Building extensions using <code class="docutils literal notranslate"><span class="pre">phpize</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#displaying-information-about-extensions">Displaying information about extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="php7/build_system/building_extensions.html">编译 PHP 扩展</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#id1">加载共享扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#pecl">从 PECL 安装扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#id3">添加扩展到 PHP 源代码树</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#phpize">使用 <code class="docutils literal notranslate"><span class="pre">phpize</span></code> 编译扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/build_system/building_extensions.html#id4">展示扩展信息</a></li>
 </ul>
 </li>
 </ul>
@@ -67,19 +66,19 @@
 <li class="toctree-l1"><a class="reference internal" href="php7/zvals.html">Zval</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="php7/zvals/basic_structure.html">基础结构</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/zvals/basic_structure.html#id2">类型和值</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/basic_structure.html#the-zval-struct">The zval struct</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/basic_structure.html#access-macros">Access macros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/basic_structure.html#zval">zval 结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/basic_structure.html#id3">访问宏</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/zvals/memory_management.html">Memory management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/memory_management.html#reference-counted-values">Reference-counted values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/memory_management.html#zval-memory-management">Zval memory management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="php7/zvals/memory_management.html">内存管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/memory_management.html#refcounting">引用计数值</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/memory_management.html#zval">Zval 内存管理</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/zvals/references.html">References</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#reference-semantics">Reference semantics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="php7/zvals/references.html">引用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#id2">引用语义</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#representation">Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#initializing-references">Initializing references</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#id3">初始化引用</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#dereferencing-and-unwrapping">Dereferencing and unwrapping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/zvals/references.html#indirect-zvals">Indirect zvals</a></li>
 </ul>
@@ -91,14 +90,14 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="php7/internal_types.html">Internal types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/strings.html">Strings</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="php7/internal_types.html">内部类型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/strings.html">字符串</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/strings/zend_strings.html">The zend_string API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/strings/smart_str.html">smart_str API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/strings/printing_functions.html">PHP’s custom printf functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/zend_resources.html">The Resource type: zend_resource</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/zend_resources.html">资源类型：zend_resource</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/zend_resources.html#what-is-the-resource-type">What is the “Resource” type?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/zend_resources.html#resource-types-and-resource-destruction">Resource types and resource destruction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/zend_resources.html#playing-with-resources">Playing with resources</a></li>
@@ -106,28 +105,28 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/zend_resources.html#persistent-resources">Persistent resources</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/hashtables.html">HashTables: zend_array</a></li>
-<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/functions.html">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/hashtables.html">散列表：zend_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="php7/internal_types/functions.html">函数</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/internal_types/functions/callables.html">PHP Callables</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="php7/classes_objects.html">Classes and objects</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="php7/classes_objects.html">类和对象</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="php7/classes_objects/object_handlers.html">Object handlers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/classes_objects/object_handlers.html#an-overview">An Overview</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="php7/extensions_design.html">Extensions design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="php7/extensions_design.html">扩展设计</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/php_lifecycle.html">学习 PHP 生命周期</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_lifecycle.html#the-parallelism-models">The parallelism models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_lifecycle.html#the-php-extensions-hooks">The PHP extensions hooks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_lifecycle.html#hooking-by-overwriting-function-pointers">Hooking by overwriting function pointers</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html">A look into a PHP extension and extension skeleton</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html">研究 PHP 扩展和扩展骨架</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html#how-the-engine-loads-extensions">How the engine loads extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html#what-is-a-php-extension">What is a PHP extension ?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html#generating-extension-skeleton-with-scripts">Generating extension skeleton with scripts</a></li>
@@ -135,7 +134,7 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_skeleton.html#publishing-api">Publishing API</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/php_functions.html">Registering and using PHP functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/php_functions.html">注册和使用 PHP 函数</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_functions.html#zend-function-entry-structure">zend_function_entry structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_functions.html#registering-php-functions">Registering PHP functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_functions.html#declaring-function-arguments">Declaring function arguments</a></li>
@@ -146,17 +145,17 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/php_functions.html#managing-references">Managing references</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/globals_management.html">Managing global state</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/globals_management.html">管理全局状态</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/globals_management.html#managing-request-globals">Managing request globals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/globals_management.html#using-true-globals">Using true globals</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/extension_infos.html">Publishing extension information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/extension_infos.html">发布扩展信息</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_infos.html#minfo-hook">MINFO() hook</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/extension_infos.html#a-note-about-the-reflection-api">A note about the Reflection API</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/hooks.html">Hooks provided by PHP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/hooks.html">PHP 提供的钩子</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/hooks.html#hooking-into-the-execution-of-functions">Hooking into the execution of functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/hooks.html#overwriting-an-internal-function">Overwriting an Internal Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/hooks.html#modifying-the-abstract-syntax-tree-ast">Modifying the Abstract Syntax Tree (AST)</a></li>
@@ -169,7 +168,7 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/hooks.html#replacing-opcode-handlers">Replacing Opcode Handlers</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/ini_settings.html">Declaring and using INI settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/ini_settings.html">声明和使用 INI 设置</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/ini_settings.html#reminders-on-ini-settings">Reminders on INI settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/ini_settings.html#zoom-on-ini-settings">Zoom on INI settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/ini_settings.html#registering-and-using-ini-entries">Registering and using INI entries</a></li>
@@ -177,7 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/ini_settings.html#using-a-displayer">Using a displayer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/zend_extensions.html">Zend Extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="php7/extensions_design/zend_extensions.html">Zend 扩展</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/zend_extensions.html#on-differences-between-php-and-zend-extensions">On differences between PHP and Zend extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/zend_extensions.html#what-is-a-zend-extension">What is a Zend extension ?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/extensions_design/zend_extensions.html#why-need-a-zend-extension">Why need a Zend extension ?</a></li>
@@ -189,12 +188,14 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="php7/memory_management.html">Memory management</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="php7/memory_management.html">内存管理</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html">Zend Memory Manager</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#the-two-main-kind-of-dynamic-memory-pools-in-php">The two main kind of dynamic memory pools in PHP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#zend-memory-manager-api">Zend Memory Manager API</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#zend-memory-manager-debugging-shields">Zend Memory Manager debugging shields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#lifecycle">Lifecycle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#zendmm-internal-design">ZendMM internal design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#hooking-into-the-zendmm">Hooking into the ZendMM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="php7/memory_management/zend_memory_manager.html#common-errors-and-mistakes">Common errors and mistakes</a></li>
 </ul>
 </li>
@@ -223,7 +224,7 @@
 </div>
 </section>
 <section id="php-5">
-<h2>PHP 5<a class="headerlink" href="#php-5" title="此标题的永久链接">¶</a></h2>
+<h2>PHP 5<a class="headerlink" href="#php-5" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="php5/introduction.html">Introduction</a></li>
@@ -274,7 +275,7 @@
 </div>
 </section>
 <section id="php">
-<h2>测试 PHP 源码<a class="headerlink" href="#php" title="此标题的永久链接">¶</a></h2>
+<h2>测试 PHP 源码<a class="headerlink" href="#php" title="Link to this heading">¶</a></h2>
 <p>编写适用于 PHP5 &amp; PHP7 的测试。</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -310,7 +311,7 @@
 </section>
 </section>
 <section id="id2">
-<h1>索引和搜索<a class="headerlink" href="#id2" title="此标题的永久链接">¶</a></h1>
+<h1>索引和搜索<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">索引</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">搜索页面</span></a></p></li>
