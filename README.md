@@ -6,7 +6,7 @@ PHP 内幕
 
 本文档的原文版本地址：https://github.com/phpinternalsbook/PHP-Internals-Book
 
-追踪的整体 Commit ID: c8e80f12a531557f535ac5c065c64282a96bc0a4
+追踪的整体 Commit ID: e643471854ddf909d44d0e28d8c59dd7713b6640
 
 文档格式: RST
 --------------------

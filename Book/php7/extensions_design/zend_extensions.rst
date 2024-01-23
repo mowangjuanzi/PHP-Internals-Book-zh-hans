@@ -1,4 +1,4 @@
-Zend Extensions
+Zend 扩展
 ===============
 
 PHP knows two kinds of extensions :

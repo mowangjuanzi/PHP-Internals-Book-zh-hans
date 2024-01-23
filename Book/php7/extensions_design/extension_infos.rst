@@ -1,4 +1,4 @@
-Publishing extension information
+发布扩展信息
 =================================
 
 Extensions can publish information asked by ``phpinfo()`` or the Reflection API. Let's see that together.

@@ -1,4 +1,4 @@
-Memory management 
+内存管理
 =================
 
 To work with zvals correctly and efficiently, it is important to understand how their memory management works. Broadly,
@@ -7,7 +7,7 @@ complex values like strings, for which the zval only stores a pointer to a separ
 
 .. _refcounting:
 
-Reference-counted values
+引用计数值
 ------------------------
 
 All complex values share a common header with the following structure::
@@ -141,7 +141,7 @@ typically affects strings, in which case they can be made immutable through inte
 ``GC_MAKE_PERSISTENT_LOCAL()`` macro is used to mark a persistent structure as thread-local. This macro doesn't do
 anything beyond disabling the ``ZEND_RC_DEBUG`` verification.
 
-Zval memory management
+Zval 内存管理
 ----------------------
 
 With the preliminaries out of the way, we can discuss how memory management interacts with zvals. Refcounted

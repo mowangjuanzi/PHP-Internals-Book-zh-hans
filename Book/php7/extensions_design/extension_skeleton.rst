@@ -1,4 +1,4 @@
-A look into a PHP extension and extension skeleton
+研究 PHP 扩展和扩展骨架
 ==================================================
 
 Here we detail what a PHP extension look like, and how to generate a skeleton using some tools. That will allow us to

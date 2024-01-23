@@ -1,6 +1,6 @@
 .. _php_lifecycle:
 
-Learning the PHP lifecycle
+学习 PHP 生命周期
 ==========================
 
 PHP is a complex piece of machinery whose lifecycle really should be understood by anyone who wants to understand how PHP operates. The main sequence is as follows:

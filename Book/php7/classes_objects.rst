@@ -1,4 +1,4 @@
-Classes and objects
+类和对象
 ===================
 
 This chapter covers the rather complex internals of PHP's object orientation system.

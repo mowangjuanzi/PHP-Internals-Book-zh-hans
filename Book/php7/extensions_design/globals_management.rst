@@ -1,4 +1,4 @@
-Managing global state
+管理全局状态
 =====================
 
 There is always a need of some global space in imperative languages. While programming PHP or extensions, we will make

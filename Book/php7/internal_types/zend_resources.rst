@@ -1,4 +1,4 @@
-The Resource type: zend_resource
+资源类型：zend_resource
 ================================
 
 Even though PHP could really get rid of the "resource" type, because custom object storage allows to build a PHP 
