@@ -24,12 +24,12 @@
 
 * C 程序设计语言（Ritchie & Kernighan）
 * Advanced Topics in C Core Concepts in Data Structures
-* Learn C the Hard Way
-* The Art of Debugging with GDB DDD and Eclipse
-* The Linux Programming Interface
+* 笨办法学 C 语言（Learn C the Hard Way）
+* 软件调试的艺术（The Art of Debugging with GDB DDD and Eclipse）
+* Linux/UNIX 系统编程手册（The Linux Programming Interface）
 * Advanced Linux Programming
-* Hackers Delight
-* Write Great Code (2 Volumes)
+* 算法心得（Hackers Delight）
+* 编程卓越之道第2卷：运用底层语言思想编写高级语言代码（Write Great Code (2 Volumes)）
 
 .. note:: 本书是半成品，一些章节还没写完。我们不会注意特定的顺序，而是根据我们的感觉添加内容。
 

@@ -263,8 +263,8 @@ shutdown and free all cached chunks as well as the heap itself.</p>
 created for every request during request init and stored in the <code class="docutils literal notranslate"><span class="pre">alloc_globals-&gt;mm_heap</span></code>. This heap also comes with
 the first chunk that is allocated with it. Chunks are then subdivided into pages. Smaller allocations are stored in bins
 which may fit into one page but some also span multiple pages.</p>
-<section id="internal-memory-organisation">
-<h3>Internal memory organisation<a class="headerlink" href="#internal-memory-organisation" title="Link to this heading">¶</a></h3>
+<section id="id1">
+<h3>内部存储组织<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <section id="heap">
 <h4>Heap<a class="headerlink" href="#heap" title="Link to this heading">¶</a></h4>
 <p>The heap, as defined in the struct <code class="docutils literal notranslate"><span class="pre">_zend_mm_heap</span></code>, holds links to chunks (<code class="docutils literal notranslate"><span class="pre">main_chunk</span></code> and <code class="docutils literal notranslate"><span class="pre">cached_chunks</span></code>, for
