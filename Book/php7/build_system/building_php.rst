@@ -122,9 +122,8 @@ libsqlite3，可以通过 ``libxml2-dev`` 和 ``libsqlite3-dev`` 包安装。
 这些 makefile 的主要工作是运行 ``autoconf`` 生成 ``./configure`` 脚本和 ``autoheader`` 生成 ``main/php_config.h.in``
 模板。后面的文件会被配置生成最终的配置头文件 ``main/php_config.h``。
 
-Both utilities produce their results from the ``configure.ac`` file (which specifies most of the PHP build process),
-the ``build/php.m4`` file (which specifies a large number of PHP-specific M4 macros) and the ``config.m4`` files of
-individual extensions and SAPIs (as well as a bunch of other `m4 files <http://www.gnu.org/software/m4/m4.html>`_).
+这两个实用程序都从 ``configure.ac`` 文件（该文件指定了 PHP 大部分编译过程）、``build/php.m4`` 文件（该文件指定了大量 PHP 特定 M4
+宏）以及各个扩展和 SAPI 的 ``config.m4`` 文件中（以及其他许多 `m4文件 <http://www.gnu.org/software/m4/m4.html>`_）生成结果。
 
 好消息是编写扩展甚至进行核心修改都不需要跟编译系统进行太多交互。稍后需要编写小的 ``config.m4`` 文件，但这些文件通常只使用
 ``build/php.m4`` 提供的两到三个高级宏。因此，不会再这里进一步详细介绍。
@@ -230,15 +229,12 @@ PHP 的线程安全和全局内存管理的更多信息，应该阅读:doc:`全�
 ``--enable-werror`` （自 PHP 7.4 起）启用 ``-Werror`` 编译器 flag，这会使编译器警告升级为错误。启用此 flag 可确保 PHP
 编译时保持无警告。但是，生成的警告取决于使用的编译器、版本和优化选项，因此某些编译器可能无法使用此选项。
 
-On the other hand you should not use the ``--enable-debug`` option if you want to perform performance benchmarks for
-your code. ``--enable-zts`` can also negatively impact runtime performance.
+另一方面，如果要对代码执行性能测试，则不应使用 ``--enable-debug`` 选项。``--enable-zts`` 也会对运行时的性能产生负面影响。
 
-Note that ``--enable-debug`` and ``--enable-zts`` change the ABI of the PHP binary, e.g. by adding additional arguments
-to functions. As such, shared extensions compiled in debug mode will not be compatible with a PHP binary built in
-release mode. Similarly a thread-safe extension (ZTS) is not compatible with a non-thread-safe PHP build (NTS).
+注意，``--enable-debug`` 和 ``--enable-zts`` 会更改 PHP 二进制文件的 ABI，例如，向函数添加其他参数。因此，以调试模式编译的共享扩展将与发布模式编译的
+PHP 二进制文件不兼容。同样，线程安全的扩展 (ZTS) 与编译后的非线程安全 PHP (NTS) 不兼容。
 
-Due to the ABI incompatibility ``make install`` (and PECL install) will put shared extensions in different directories
-depending on these options:
+由于 ABI 不兼容，根据这些选项，``make install`` （和 PECL install）会将共享扩展放在不同的目录中:
 
 * ``$PREFIX/lib/php/extensions/no-debug-non-zts-API_NO`` for release builds without ZTS
 * ``$PREFIX/lib/php/extensions/debug-non-zts-API_NO`` for debug builds without ZTS
