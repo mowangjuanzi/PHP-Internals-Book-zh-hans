@@ -130,7 +130,7 @@ libsqlite3，可以通过 ``libxml2-dev`` 和 ``libsqlite3-dev`` 包安装。
 
 ``./buildconf`` 脚本只有两个选项：``--debug`` 将在调用 autoconf 和 autoheader 时禁用警告抑制。除非在编译系统上工作，否则不会对这个选项感兴趣。
 
-第二个选项是 ``--force``，允许在发行包中运行 ``./buildconf``（例如，下载了打包的源代码并想生成新的
+第二个选项是 ``--force``，允许在发行包中运行 ``./buildconf`` （例如，下载了打包的源代码并想生成新的
 ``./configure``）并另外清除配置缓存 ``config.cache`` 和 ``autom4te.cache/``。
 
 如果使用 ``git pull`` （或其它命令）更新 git 存储库在 ``make`` 阶段出现奇怪的错误，这通常意味着编译配置中的某些内容发生了变化，需要重新运行
@@ -224,7 +224,7 @@ PHP 默认将编译 CLI 和 CGI SAPI，以及一些扩展。可以使用 ``-m`` 
 
 ``--enable-zts`` （PHP 8.0 之前为 ``--enable-maintainer-zts``）启用线程安全。这个开关将定义 ``ZTS`` 宏，它反过来将使 PHP 启用完整
 TSRM（线程安全资源管理器）机制。自 PHP 7 起，持续启用此开关的重要性要比之前的版本低得多。确保包含所有必要的样板代码非常重要。如果需要有关
-PHP 的线程安全和全局内存管理的更多信息，应该阅读:doc:`全局管理章节 <../extensions_design/globals_management>`
+PHP 的线程安全和全局内存管理的更多信息，应该阅读 :doc:`全局管理章节 <../extensions_design/globals_management>`
 
 ``--enable-werror`` （自 PHP 7.4 起）启用 ``-Werror`` 编译器 flag，这会使编译器警告升级为错误。启用此 flag 可确保 PHP
 编译时保持无警告。但是，生成的警告取决于使用的编译器、版本和优化选项，因此某些编译器可能无法使用此选项。
@@ -236,33 +236,28 @@ PHP 二进制文件不兼容。同样，线程安全的扩展 (ZTS) 与编译后
 
 由于 ABI 不兼容，根据这些选项，``make install`` （和 PECL install）会将共享扩展放在不同的目录中:
 
-* ``$PREFIX/lib/php/extensions/no-debug-non-zts-API_NO`` for release builds without ZTS
-* ``$PREFIX/lib/php/extensions/debug-non-zts-API_NO`` for debug builds without ZTS
-* ``$PREFIX/lib/php/extensions/no-debug-zts-API_NO`` for release builds with ZTS
-* ``$PREFIX/lib/php/extensions/debug-zts-API_NO`` for debug builds with ZTS
+* 不带 ZTS 的发行版本： ``$PREFIX/lib/php/extensions/no-debug-non-zts-API_NO``
+* 不带 ZTS 的调试版本： ``$PREFIX/lib/php/extensions/debug-non-zts-API_NO``
+* 带 ZTS 的发行版本： ``$PREFIX/lib/php/extensions/no-debug-zts-API_NO``
+* 带 ZTS 的调试版本： ``$PREFIX/lib/php/extensions/debug-zts-API_NO``
 
-The ``API_NO`` placeholder above refers to the ``ZEND_MODULE_API_NO`` and is just a date like ``20100525``, which is
-used for internal API versioning.
+上面的 ``API_NO`` 占位符指的是 ``ZEND_MODULE_API_NO``，只是一个像 ``20100525`` 这样的日期，用于内部 API 版本控制。
 
-For most purposes the configuration switches described above should be sufficient, but of course ``./configure``
-provides many more options, which you'll find described in the help.
+对于大多数用途来说，上述配置开关应该足够了，但当然 ``./configure`` 提供了更多选项，可以在帮助中找到这些选项。
 
-Apart from passing options to configure, you can also specify a number of environment variables. Some of the more
-important ones are documented at the end of the configure help output (``./configure --help | tail -25``).
+除了选项传递给 configure 之外，还可以指定许多环境变量。一些更重要的内容记录在 configure 帮助输出的末尾 (``./configure --help | tail -25``)。
 
-For example you can use ``CC`` to use a different compiler and ``CFLAGS`` to change the used compilation flags::
+例如，可以使用 ``CC`` 来使用不同的编译器，并使用 ``CFLAGS`` 来更改使用的编译flags： ::
 
     ~/php-src> ./configure --disable-all CC=clang CFLAGS="-O3 -march=native"
 
-In this configuration the build will make use of clang (instead of gcc) and use a very high optimization level
-(``-O3 -march=native``).
+在此配置中，编译将使用 clang（而不是 gcc）并使用非常高的优化级别 (``-O3 -march=native``)。
 
-An option that is particularly useful for development is ``-fsanitize``, which allows you to detect memory corruption
-and undefined behavior at runtime::
+对于开发特别有用的选项是 ``-fsanitize``，它允许在运行时检测内存损坏和未定义的行为：::
 
     CFLAGS="-fsanitize=address -fsanitize=undefined"
 
-These options only work reliably since PHP 7.4 and will significantly slow down the generated PHP binary.
+这些选项仅自 PHP 7.4 起能狗稳定运行，并且会显着降低生成 PHP 二进制文件的速度。
 
 ``make`` 和 ``make install``
 -----------------------------
