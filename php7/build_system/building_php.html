@@ -41,7 +41,7 @@
 <span id="building-php"></span><h1>编译 PHP<a class="headerlink" href="#php" title="Link to this heading">¶</a></h1>
 <p>本章解释了如何以适合扩展开发和核心修改的方式编译 PHP。 我们只涵盖了类 UNIX 系统。如果想要在 Windows 中编译 PHP，应该查看 PHP WIKI
 中的 <a class="reference external" href="https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2">step-by-step build instructions</a> <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>。</p>
-<p>本章还概述了 PHP 构建系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。</p>
+<p>本章还概述了 PHP 编译系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
@@ -56,7 +56,7 @@ PHP。在解释实际的编译之前，应该首先了解为什么需要自己�
 <code class="docutils literal notranslate"><span class="pre">php-dev</span></code>）解决。为了便于使用 valgrind 或 gdb 进行调试，可以安装调试符号，这通常另外一个由称为 <code class="docutils literal notranslate"><span class="pre">php-dbg</span></code>
 的包提供这些符号。</p>
 <p>但即使安装了头文件和调试符号，你仍然会使用 PHP 的发行版本。这意味着 PHP 将以高优化级别编译，这会使调试变得困难。
-另外发行版本也不启用断言，也不生成有关内存泄露的警告。还有，预编译包也不启用线程安全，这可能有助于确保扩展在线程安装配置中构建。</p>
+另外发行版本也不启用断言，也不生成有关内存泄露的警告。还有，预编译包也不启用线程安全，这可能有助于确保扩展在线程安装配置中编译。</p>
 <p>还有一个问题是几乎所有的发行版都对 PHP 应用了额外的补丁。在某些情况下，这些补丁仅包含于配置相关的微小更改，但也有一些发行版使用了 Suhosin
 等具有高度浸入的补丁。众所周知，其中一些补丁与低级扩展（如 opcache）有不兼容的内容。</p>
 <p>PHP 只会为 <a class="reference external" href="http://www.php.net">php.net</a> 上提供的软件提供支持，不为分发修改后的版本提供支持。如果想要报告
@@ -65,7 +65,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 <section id="id5">
 <h2>获取源代码<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>在编译 PHP 之前，首先需要获取源代码。有两种方式：从 <a class="reference external" href="http://www.php.net/downloads.php">PHP 下载页面</a> 下载归档文件或从 <a class="reference external" href="http://www.github.com/php/php-src">Github</a> 克隆 git 存储库。</p>
-<p>两者的构建过程略有不同：git 存储库不捆绑 <code class="docutils literal notranslate"><span class="pre">configure</span></code> 脚本，所以需要使用 <code class="docutils literal notranslate"><span class="pre">buildconf</span></code> 脚本生成，该脚本利用了 autoconf。另外，git
+<p>两者编译过程略有不同：git 存储库不捆绑 <code class="docutils literal notranslate"><span class="pre">configure</span></code> 脚本，所以需要使用 <code class="docutils literal notranslate"><span class="pre">buildconf</span></code> 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。</p>
 <p>建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。</p>
 <p>在终端中克隆存储库，运行下列命令:</p>
@@ -255,16 +255,13 @@ PHP 二进制文件不兼容。同样，线程安全的扩展 (ZTS) 与编译后
 </section>
 <section id="make-make-install">
 <h2><code class="docutils literal notranslate"><span class="pre">make</span></code> 和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code><a class="headerlink" href="#make-make-install" title="Link to this heading">¶</a></h2>
-<p>After everything is configured, you can use <code class="docutils literal notranslate"><span class="pre">make</span></code> to perform the actual compilation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN<span class="w">    </span><span class="c1"># where N is the number of cores</span>
+<p>配置完所有后，可以使用 <code class="docutils literal notranslate"><span class="pre">make</span></code> 来执行实际编译：:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN<span class="w">    </span><span class="c1">#  N 是核心数</span>
 </pre></div>
 </div>
-<p>The main result of this operation will be PHP binaries for the enabled SAPIs (by default <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> and
-<code class="docutils literal notranslate"><span class="pre">sapi/cgi/php-cgi</span></code>), as well as shared extensions in the <code class="docutils literal notranslate"><span class="pre">modules/</span></code> directory.</p>
-<p>Now you can run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> to install PHP into <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> (default) or whatever directory you specified using
-the <code class="docutils literal notranslate"><span class="pre">--prefix</span></code> configure switch.</p>
-<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> will do little more than copy a number of files to the new location. If you specified <code class="docutils literal notranslate"><span class="pre">--with-pear</span></code>
-during configuration, it will also download and install PEAR. Here is the resulting tree of a default PHP build:</p>
+<p>此操作的主要结果将是启用 SAPI（默认为 <code class="docutils literal notranslate"><span class="pre">sapi/cli/php</span></code> 和 <code class="docutils literal notranslate"><span class="pre">sapi/cgi/php-cgi</span></code>）的 PHP 二进制文件，以及 <code class="docutils literal notranslate"><span class="pre">modules/</span></code> 目录中的共享扩展。</p>
+<p>现在，可以运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 将 PHP 安装到 <code class="docutils literal notranslate"><span class="pre">/usr/local``（默认）或使用</span> <span class="pre">``--prefix</span></code> 配置项指定的目录。</p>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 只会将一些文件复制到新位置。如果在配置过程中指定了 <code class="docutils literal notranslate"><span class="pre">--with-pear</span></code>，也将会下载并安装 PEAR。以下是默认 PHP 编译的结果树：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; tree -L 3 -F ~/myphp
 
 /home/myuser/myphp
@@ -310,19 +307,16 @@ during configuration, it will also download and install PEAR. Here is the result
         `-- man1/
 </pre></div>
 </div>
-<p>A short overview of the directory structure:</p>
+<p>目录结构的简短概述：</p>
 <ul class="simple">
-<li><p><em>bin/</em> contains the SAPI binaries (<code class="docutils literal notranslate"><span class="pre">php</span></code> and <code class="docutils literal notranslate"><span class="pre">php-cgi</span></code>), as well as the <code class="docutils literal notranslate"><span class="pre">phpize</span></code> and <code class="docutils literal notranslate"><span class="pre">php-config</span></code> scripts.
-It is also home to the various PEAR/PECL scripts.</p></li>
-<li><p><em>etc/</em> contains configuration. Note that the default <em>php.ini</em> directory is <strong>not</strong> here.</p></li>
-<li><p><em>include/php</em> contains header files, which are needed to build additional extensions or embed PHP in custom software.</p></li>
-<li><p><em>lib/php</em> contains PEAR files. The <em>lib/php/build</em> directory includes files necessary for building extensions, e.g.
-the <code class="docutils literal notranslate"><span class="pre">php.m4</span></code> file containing PHP’s M4 macros. If we had compiled any shared extensions those files would live
-in a subdirectory of <em>lib/php/extensions</em>.</p></li>
-<li><p><em>php/man</em> obviously contains man pages for the <code class="docutils literal notranslate"><span class="pre">php</span></code> command.</p></li>
+<li><p><em>bin/</em> 包含 SAPI 二进制文件（ <code class="docutils literal notranslate"><span class="pre">php</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php-cgi</span></code>），以及 <code class="docutils literal notranslate"><span class="pre">phpize</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php-config</span></code> 脚本。也是各种 PEAR/PECL 脚本的所在地。</p></li>
+<li><p><em>etc/</em> 包含配置。注意默认 <em>php.ini</em> 目录 <strong>不</strong> 在这里。</p></li>
+<li><p><em>include/php</em> 包含头文件，用于需要编译附加的扩展或者在自定义软件中内嵌 PHP。</p></li>
+<li><p><em>lib/php</em> 包含 PEAR 文件。<em>lib/php/build</em> 目录包含编译扩展所需的文件，比如
+<code class="docutils literal notranslate"><span class="pre">php.m4</span></code> 文件包含 PHP M4 宏。如果编译了任何共享扩展，这些文件将位于 <em>lib/php/extensions</em> 的子目录中。</p></li>
+<li><p><em>php/man</em> 显而易见包含 <code class="docutils literal notranslate"><span class="pre">php</span></code> 命令的手册页。</p></li>
 </ul>
-<p>As already mentioned, the default <em>php.ini</em> location is not <em>etc/</em>. You can display the location using the <code class="docutils literal notranslate"><span class="pre">--ini</span></code>
-option of the PHP binary:</p>
+<p>正如刚才所说，默认 <em>php.ini</em> 位置不是 <em>etc/</em>。可以使用 PHP 二进制文件的 <code class="docutils literal notranslate"><span class="pre">--ini</span></code> 选项显示位置：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>~/myphp/bin&gt; ./php --ini
 Configuration File (php.ini) Path: /home/myuser/myphp/lib
 Loaded Configuration File:         (none)
@@ -330,10 +324,9 @@ Scan for additional .ini files in: (none)
 Additional .ini files parsed:      (none)
 </pre></div>
 </div>
-<p>As you can see the default <em>php.ini</em> directory is <code class="docutils literal notranslate"><span class="pre">$PREFIX/lib</span></code> (libdir) rather than <code class="docutils literal notranslate"><span class="pre">$PREFIX/etc</span></code> (sysconfdir). You
-can adjust the default <em>php.ini</em> location using the <code class="docutils literal notranslate"><span class="pre">--with-config-file-path=PATH</span></code> configure option.</p>
-<p>Also note that <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> will not create an ini file. If you want to make use of a <em>php.ini</em> file it is your
-responsibility to create one. For example you could copy the default development configuration:</p>
+<p>如你所见，默认 <em>php.ini</em> 目录是 <code class="docutils literal notranslate"><span class="pre">$PREFIX/lib</span></code> (libdir) 而不是 <code class="docutils literal notranslate"><span class="pre">$PREFIX/etc</span></code> (sysconfdir)。可以使用
+<code class="docutils literal notranslate"><span class="pre">--with-config-file-path=PATH</span></code> 配置选项调整默认 <em>php.ini</em> 位置。</p>
+<p>另需要注意， <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 不会创建 ini 文件。如果想使用 <em>php.ini</em> 文件，则需要自己创建文。例如，可以复制默认的开发配置：</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>~/myphp/bin&gt; cp ~/php-src/php.ini-development ~/myphp/lib/php.ini
 ~/myphp/bin&gt; ./php --ini
 Configuration File (php.ini) Path: /home/myuser/myphp/lib

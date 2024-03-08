@@ -8,7 +8,7 @@
 本章解释了如何以适合扩展开发和核心修改的方式编译 PHP。 我们只涵盖了类 UNIX 系统。如果想要在 Windows 中编译 PHP，应该查看 PHP WIKI
 中的 `step-by-step build instructions`__ [#]_。
 
-本章还概述了 PHP 构建系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。
+本章还概述了 PHP 编译系统的工作原理及其使用的工具，但对它的详细描述超出了本书的范围。
 
 .. __: https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2
 
@@ -25,7 +25,7 @@ PHP。在解释实际的编译之前，应该首先了解为什么需要自己�
 的包提供这些符号。
 
 但即使安装了头文件和调试符号，你仍然会使用 PHP 的发行版本。这意味着 PHP 将以高优化级别编译，这会使调试变得困难。
-另外发行版本也不启用断言，也不生成有关内存泄露的警告。还有，预编译包也不启用线程安全，这可能有助于确保扩展在线程安装配置中构建。
+另外发行版本也不启用断言，也不生成有关内存泄露的警告。还有，预编译包也不启用线程安全，这可能有助于确保扩展在线程安装配置中编译。
 
 还有一个问题是几乎所有的发行版都对 PHP 应用了额外的补丁。在某些情况下，这些补丁仅包含于配置相关的微小更改，但也有一些发行版使用了 Suhosin
 等具有高度浸入的补丁。众所周知，其中一些补丁与低级扩展（如 opcache）有不兼容的内容。
@@ -40,7 +40,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 
 在编译 PHP 之前，首先需要获取源代码。有两种方式：从 `PHP 下载页面`_ 下载归档文件或从 `Github`_ 克隆 git 存储库。
 
-两者的构建过程略有不同：git 存储库不捆绑 ``configure`` 脚本，所以需要使用 ``buildconf`` 脚本生成，该脚本利用了 autoconf。另外，git
+两者编译过程略有不同：git 存储库不捆绑 ``configure`` 脚本，所以需要使用 ``buildconf`` 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。
 
 建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。
@@ -262,18 +262,15 @@ PHP 二进制文件不兼容。同样，线程安全的扩展 (ZTS) 与编译后
 ``make`` 和 ``make install``
 -----------------------------
 
-After everything is configured, you can use ``make`` to perform the actual compilation::
+配置完所有后，可以使用 ``make`` 来执行实际编译：::
 
-    ~/php-src> make -jN    # where N is the number of cores
+    ~/php-src> make -jN    #  N 是核心数
 
-The main result of this operation will be PHP binaries for the enabled SAPIs (by default ``sapi/cli/php`` and
-``sapi/cgi/php-cgi``), as well as shared extensions in the ``modules/`` directory.
+此操作的主要结果将是启用 SAPI（默认为 ``sapi/cli/php`` 和 ``sapi/cgi/php-cgi``）的 PHP 二进制文件，以及 ``modules/`` 目录中的共享扩展。
 
-Now you can run ``make install`` to install PHP into ``/usr/local`` (default) or whatever directory you specified using
-the ``--prefix`` configure switch.
+现在，可以运行 ``make install`` 将 PHP 安装到 ``/usr/local``（默认）或使用 ``--prefix`` 配置项指定的目录。
 
-``make install`` will do little more than copy a number of files to the new location. If you specified ``--with-pear``
-during configuration, it will also download and install PEAR. Here is the resulting tree of a default PHP build:
+``make install`` 只会将一些文件复制到新位置。如果在配置过程中指定了 ``--with-pear``，也将会下载并安装 PEAR。以下是默认 PHP 编译的结果树：
 
 .. code-block:: none
 
@@ -321,19 +318,16 @@ during configuration, it will also download and install PEAR. Here is the result
         `-- man
             `-- man1/
 
-A short overview of the directory structure:
+目录结构的简短概述：
 
-* *bin/* contains the SAPI binaries (``php`` and ``php-cgi``), as well as the ``phpize`` and ``php-config`` scripts.
-  It is also home to the various PEAR/PECL scripts.
-* *etc/* contains configuration. Note that the default *php.ini* directory is **not** here.
-* *include/php* contains header files, which are needed to build additional extensions or embed PHP in custom software.
-* *lib/php* contains PEAR files. The *lib/php/build* directory includes files necessary for building extensions, e.g.
-  the ``php.m4`` file containing PHP's M4 macros. If we had compiled any shared extensions those files would live
-  in a subdirectory of *lib/php/extensions*.
-* *php/man* obviously contains man pages for the ``php`` command.
+* *bin/* 包含 SAPI 二进制文件（ ``php`` 和 ``php-cgi``），以及 ``phpize`` 和 ``php-config`` 脚本。也是各种 PEAR/PECL 脚本的所在地。
+* *etc/* 包含配置。注意默认 *php.ini* 目录 **不** 在这里。
+* *include/php* 包含头文件，用于需要编译附加的扩展或者在自定义软件中内嵌 PHP。
+* *lib/php* 包含 PEAR 文件。*lib/php/build* 目录包含编译扩展所需的文件，比如
+  ``php.m4`` 文件包含 PHP M4 宏。如果编译了任何共享扩展，这些文件将位于 *lib/php/extensions* 的子目录中。
+* *php/man* 显而易见包含 ``php`` 命令的手册页。
 
-As already mentioned, the default *php.ini* location is not *etc/*. You can display the location using the ``--ini``
-option of the PHP binary:
+正如刚才所说，默认 *php.ini* 位置不是 *etc/*。可以使用 PHP 二进制文件的 ``--ini`` 选项显示位置：
 
 .. code-block:: none
 
@@ -343,11 +337,10 @@ option of the PHP binary:
     Scan for additional .ini files in: (none)
     Additional .ini files parsed:      (none)
 
-As you can see the default *php.ini* directory is ``$PREFIX/lib`` (libdir) rather than ``$PREFIX/etc`` (sysconfdir). You
-can adjust the default *php.ini* location using the ``--with-config-file-path=PATH`` configure option.
+如你所见，默认 *php.ini* 目录是 ``$PREFIX/lib`` (libdir) 而不是 ``$PREFIX/etc`` (sysconfdir)。可以使用
+``--with-config-file-path=PATH`` 配置选项调整默认 *php.ini* 位置。
 
-Also note that ``make install`` will not create an ini file. If you want to make use of a *php.ini* file it is your
-responsibility to create one. For example you could copy the default development configuration:
+另需要注意， ``make install`` 不会创建 ini 文件。如果想使用 *php.ini* 文件，则需要自己创建文。例如，可以复制默认的开发配置：
 
 .. code-block:: none
 
