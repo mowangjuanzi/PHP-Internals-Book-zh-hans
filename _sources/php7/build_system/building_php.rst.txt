@@ -43,7 +43,7 @@ bug、提交补丁、或者使用我们的帮助渠道编写扩展，应该始�
 两者编译过程略有不同：git 存储库不捆绑 ``configure`` 脚本，所以需要使用 ``buildconf`` 脚本生成，该脚本利用了 autoconf。另外，git
 存储库不包含预生成的 lexer 和 parser，还需要安装 re2c 和 bison。
 
-建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果你香味 PHP 提交补丁或者拉取请求，也需要 git 检出。
+建议从 git 检出源代码，因为这将会提供一个简单的方法来保持更新并尝试使用不同版本的代码。如果想为 PHP 提交补丁或者拉取请求，也需要 git 检出。
 
 在终端中克隆存储库，运行下列命令::
 
@@ -351,12 +351,12 @@ PHP 二进制文件不兼容。同样，线程安全的扩展 (ZTS) 与编译后
     Scan for additional .ini files in: (none)
     Additional .ini files parsed:      (none)
 
-Apart from the PHP binaries the *bin/* directory also contains two important scripts: ``phpize`` and ``php-config``.
+*bin/* 目录除了 PHP 二进制文件之外，还包含两个重要的脚本: ``phpize`` 和 ``php-config``。
 
-``phpize`` is the equivalent of ``./buildconf`` for extensions. It will copy various files from *lib/php/build* and
-invoke autoconf/autoheader. You will learn more about this tool in the next section.
+``phpize`` 等同于扩展的 ``./buildconf``。将从 *lib/php/build* 复制各种文件并调用
+autoconf/autoheader。此工具的更多信息将在下一节了解到。
 
-``php-config`` provides information about the configuration of the PHP build. Try it out:
+``php-config`` 提供了有关 PHP 编译配置的信息，试试看：
 
 .. code-block:: none
 
@@ -376,61 +376,45 @@ invoke autoconf/autoheader. You will learn more about this tool in the next sect
       --version           [5.4.16-dev]
       --vernum            [50416]
 
-The script is similar to the ``pkg-config`` script used by linux distributions. It is invoked during the extension
-build process to obtain information about compiler options and paths. You can also use it to quickly get information
-about your build, e.g. your configure options or the default extension directory. This information is also provided by
-``./php -i`` (phpinfo), but ``php-config`` provides it in a simpler form (which can be easily used by automated tools).
+该脚本类似于 Linux 发行版使用的 ``pkg-config`` 脚本。会在扩展编译过程中调用它，以获取有关编译器选项和路径的信息。还可以使用它来快速获取有关编译的信息，例如配置选项或默认扩展目录。此信息也由
+``./php -i`` (phpinfo) 提供，但 ``php-config`` 以更简单的形式提供（可以轻松用于自动化工具）。
 
 运行测试套件
 ----------------------
 
-If the ``make`` command finishes successfully, it will print a message encouraging you to run ``make test``:
+如果 ``make`` 命令成功完成，它将打印一条消息，鼓励运行 ``make test``：
 
 .. code-block:: none
 
     Build complete.
     Don't forget to run 'make test'
 
-``make test`` will run the PHP CLI binary against our test suite, which is located in the different *tests/* directories
-of the PHP source tree. As a default build is run against more than 10000 (less for a minimal build, more if
-you enable additional extensions) this can take several minutes.
-
-The ``make test`` command internally invokes the ``run-tests.php`` file using your CLI binary. For more control, it is
-recommended to invoke ``run-tests.php`` directly. For example, this will allow you to enable the parallel test runner::
+``make test`` 命令在内部使用 CLI 二进制文件调用 ``run-tests.php`` 文件。为了进行更多控制，建议直接调用 ``run-tests.php``。例如，这将允许启用并行测试运行程序::
 
     ~/php-src> sapi/cli/php run-tests.php -jN
 
-Test parallelism is only available as of PHP 7.4. On earlier PHP versions parallelism is not available, and it is
-necessary to additionally pass the ``-P`` option::
+并行性测试仅自 PHP 7.4 起可用。在早期 PHP 版本中，并行不可用，并且需要另外传递 ``-P`` 选项::
 
     ~/php-src> sapi/cli/php run-tests.php -P
 
-Instead of running the whole test suite, you can also limit it to certain directories by passing them as arguments to
-``run-tests.php``. E.g. to test only the Zend engine, the reflection extension and the array functions::
+除了运行整个测试套件之外，还可以将某些目录作为参数传递给 ``run-tests.php``。例如，仅测试 Zend 引擎、反射扩展和数组函数::
 
     ~/php-src> sapi/cli/php run-tests.php -jN Zend/ ext/reflection/ ext/standard/tests/array/
 
-This is very useful, because it allows you to quickly run only the parts of the test suite that are relevant to your
-changes. E.g. if you are doing language modifications you likely don't care about the extension tests and only want to
-verify that the Zend engine is still working correctly.
+这非常有用，因为它允许快速仅运行与更改相关的测试套件部分。例如，如果正在进行语言修改，可能不关心扩展测试，而只想验证 Zend 引擎是否仍然正常工作。
 
-You can run ``sapi/cli/php run-tests.php --help`` to display a full list of options the test runner accepts. Some
-particularly useful options are:
+可以运行 ``sapi/cli/php run-tests.php --help`` 以显示测试运行程序接受选项的完整列表。一些特别有用的选项是：
 
-  * ``-c php.ini`` can be used to specify a php.ini file to use.
-  * ``-d foo=bar`` can be used to set ini options.
-  * ``-m`` runs tests under valgrind to detect memory errors. Note that this is extremely slow.
-  * ``--asan`` should be set when compiling PHP with ``-fsanitize=address``. Together these are approximately
-    equivalent to running under valgrind, but with much better performance.
+  * ``-c php.ini`` 可以用于指定要使用的 php.ini 文件。
+  * ``-d foo=bar`` 可以用于设置 ini 选项。
+  * ``-m`` 在 valgrind 下运行测试以检测内存错误。注意，这非常慢。
+  * ``--asan`` 用于使用 ``-fsanitize=address`` 编译 PHP 时应设置。它们组合在一起大约相当于在 valgrind 下运行，但性能要好很多。
 
-You don't need to explicitly use ``run-tests.php`` to pass options or limit directories. Instead you can use the
-``TESTS`` variable to pass additional arguments via ``make test``. E.g. the equivalent of the previous command would
-be::
+不需要手动使用 ``run-tests.php`` 来传递选项或限制目录。而是可以使用 ``TESTS`` 变量通过 ``make test`` 传递附加参数。例如，与上一个命令等效的是::
 
     ~/php-src> make test TESTS="-jN Zend/ ext/reflection/ ext/standard/tests/array/"
 
-We will take a more detailed look at the ``run-tests.php`` system later, in particular also talk about how to write your
-own tests and how to debug test failures. :doc:`See the dedicated tests chapter <../../tests/introduction>`.
+稍后将更详细地了解 ``run-tests.php`` 系统，特别是如何编写自己的测试以及如何调试测试失败。:doc:`请参阅专门的测试章节<../../tests/introduction>`。
 
 修复编译问题和 ``make clean``
 ----------------------------------------------
