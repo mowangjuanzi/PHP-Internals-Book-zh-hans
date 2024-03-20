@@ -396,31 +396,23 @@ Don&#39;t forget to run &#39;make test&#39;
 </section>
 <section id="make-clean">
 <h2>修复编译问题和 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code><a class="headerlink" href="#make-clean" title="Link to this heading">¶</a></h2>
-<p>As you may know <code class="docutils literal notranslate"><span class="pre">make</span></code> performs an incremental build, i.e. it will not recompile all files, but only those <code class="docutils literal notranslate"><span class="pre">.c</span></code>
-files that changed since the last invocation. This is a great way to shorten build times, but it doesn’t always work
-well: For example, if you modify a structure in a header file, <code class="docutils literal notranslate"><span class="pre">make</span></code> will not automatically recompile all <code class="docutils literal notranslate"><span class="pre">.c</span></code>
-files making use of that header, thus leading to a broken build.</p>
-<p>If you get odd errors while running <code class="docutils literal notranslate"><span class="pre">make</span></code> or the resulting binary is broken (e.g. if <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> crashes it before
-it gets to run the first test), you should try to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>. This will delete all compiled objects, thus
-forcing the next <code class="docutils literal notranslate"><span class="pre">make</span></code> call to perform a full build. (You can use <code class="docutils literal notranslate"><span class="pre">ccache</span></code> to reduce the cost of rebuilds.)</p>
-<p>Sometimes you also need to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> after changing <code class="docutils literal notranslate"><span class="pre">./configure</span></code> options. If you only enable additional
-extensions an incremental build should be safe, but changing other options may require a full rebuild.</p>
-<p>Another source of compilation issues is the modification of <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> files or other files that are part of the PHP
-build system. If such a file is changed, it is necessary to rerun the <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> and <code class="docutils literal notranslate"><span class="pre">./configure</span></code> scripts. If
-you do the modification yourself, you will likely remember to run the command, but if it happens as part of a
-<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> (or some other updating command) the issue might not be so obvious.</p>
-<p>If you encounter any odd compilation problems that are not resolved by <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>, chances are that running
-<code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> will fix the issue. To avoid typing out the previous <code class="docutils literal notranslate"><span class="pre">./configure</span></code> options afterwards, you can make
-use of the <code class="docutils literal notranslate"><span class="pre">./config.nice</span></code> script (which contains your last <code class="docutils literal notranslate"><span class="pre">./configure</span></code> call):</p>
+<p><code class="docutils literal notranslate"><span class="pre">make</span></code> 执行的是增量编译，即不会重新编译所有文件，而只会重新编译那些自上次调用以来已更改的 <code class="docutils literal notranslate"><span class="pre">.c</span></code>
+文件。 这是缩短构建时间的好办法，但它并不总是有效：例如，如果在头文件中修改结构，<code class="docutils literal notranslate"><span class="pre">make</span></code>
+将不会自动重新编译使用该头文件的所有 <code class="docutils literal notranslate"><span class="pre">.c</span></code> 文件，从而导致编译出错。</p>
+<p>如果在运行 <code class="docutils literal notranslate"><span class="pre">make</span></code> 时遇到奇怪的错误或生成的二进制文件已损坏（例如，如果 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> 在运行第一个测试之前就崩溃），则应尝试运行
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>。这将删除所有已编译的对象，从而强制下一次 <code class="docutils literal notranslate"><span class="pre">make</span></code> 调用执行完整的编译。（可以使用 <code class="docutils literal notranslate"><span class="pre">ccache</span></code> 来降低重新编译成本。）</p>
+<p>有时也需要在更改 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 选项后运行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>。如果只启用附加扩展，则增量编译应该是安全的，但更改其他选项可能需要完全重新编译。</p>
+<p>编译问题的另一个原因是修改 <code class="docutils literal notranslate"><span class="pre">config.m4</span></code> 文件或属于 PHP 编译系统的其他文件。如果更改了此类文件，则需要重新运行 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 和 <code class="docutils literal notranslate"><span class="pre">./configure</span></code>
+脚本。如果自己进行修改，那么可能会记得运行该命令，但如果它作为 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> （或其他一些更新命令）的一部分发生，问题可能不会那么明显。</p>
+<p>如果遇到任何无法通过 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> 解决的奇怪编译问题，运行 <code class="docutils literal notranslate"><span class="pre">./buildconf</span></code> 很可能会解决该问题。为了避免之后再次输入之前的 <code class="docutils literal notranslate"><span class="pre">./configure</span></code>
+选项，可以使用 <code class="docutils literal notranslate"><span class="pre">./config.nice</span></code> 脚本（包含最后一次 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 调用）:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>clean
 ~/php-src&gt;<span class="w"> </span>./buildconf<span class="w"> </span>--force
 ~/php-src&gt;<span class="w"> </span>./config.nice
 ~/php-src&gt;<span class="w"> </span>make<span class="w"> </span>-jN
 </pre></div>
 </div>
-<p>One last cleaning script that PHP provides is <code class="docutils literal notranslate"><span class="pre">./vcsclean</span></code>. This will only work if you checked out the source code
-from git. It effectively boils down to a call to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-X</span> <span class="pre">-f</span> <span class="pre">-d</span></code>, which will remove all untracked files and
-directories that are ignored by git. You should use this with care.</p>
+<p>PHP 提供的最后一个清理脚本是 <code class="docutils literal notranslate"><span class="pre">./vcsclean</span></code>。当仅从 git 查看源代码时，这才有效。它实际上归结为对 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-X</span> <span class="pre">-f</span> <span class="pre">-d</span></code> 的调用，这将删除 git 忽略的所有未跟踪文件和目录。应该小心使用它。</p>
 </section>
 </section>
 

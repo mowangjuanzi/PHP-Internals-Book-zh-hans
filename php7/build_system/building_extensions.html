@@ -39,14 +39,12 @@
         
   <section id="php">
 <h1>编译 PHP 扩展<a class="headerlink" href="#php" title="Link to this heading">¶</a></h1>
-<p>Now that you know how to compile PHP itself, we’ll move on to compiling additional extensions. We’ll discuss how the
-build process works and what different options are available.</p>
+<p>现在已经知道如何编译 PHP 了，现在将继续编译其它扩展。将讨论编译过程的工作原理以及不同的有效选项。</p>
 <section id="id1">
 <h2>加载共享扩展<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
-<p>As you already know from the previous section, PHP extensions can be either built statically into the PHP binary, or
-compiled into a shared object (<code class="docutils literal notranslate"><span class="pre">.so</span></code>). Static linkage is the default for most of the bundled extensions, whereas
-shared objects can be created by explicitly passing <code class="docutils literal notranslate"><span class="pre">--enable-EXTNAME=shared</span></code> or <code class="docutils literal notranslate"><span class="pre">--with-EXTNAME=shared</span></code> to
-<code class="docutils literal notranslate"><span class="pre">./configure</span></code>.</p>
+<p>正如上一节中所说，PHP 扩展可以静态编译到 PHP 二进制文件中，也可以编译到共享对象（ <code class="docutils literal notranslate"><span class="pre">.so</span></code>
+）中。静态链接是大多数捆绑扩展的默认设置，而共享对象可以通过手动传递 <code class="docutils literal notranslate"><span class="pre">--enable-EXTNAME=shared</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--with-EXTNAME=shared</span></code>
+到 <code class="docutils literal notranslate"><span class="pre">./configure</span></code> 来创建。</p>
 <p>While static extensions will always be available, shared extensions need to be loaded using the <code class="docutils literal notranslate"><span class="pre">extension</span></code> or
 <code class="docutils literal notranslate"><span class="pre">zend_extension</span></code> ini options. Both options take either an absolute path to the <code class="docutils literal notranslate"><span class="pre">.so</span></code> file or a path relative to
 the <code class="docutils literal notranslate"><span class="pre">extension_dir</span></code> setting.</p>

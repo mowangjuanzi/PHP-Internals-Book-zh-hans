@@ -6,16 +6,13 @@ zval（“Zend value”的缩写）表示任意 PHP 值。因此它是所有 PHP
 类型和值
 ----------------
 
-Among other things, every zval stores some value and the type this value has. This is necessary because PHP is a
-dynamically typed language and as such variable types are only known at run-time and not at compile-time. Furthermore,
-the type can change during the life of a zval, so if the zval previously stored an integer it may contain a string at a
-later point in time.
+除此之外，每个 zval 都存储一些值以及该值的类型。这是必要的，因为 PHP 是动态类型语言，因此变量类型仅在运行时知道而不是在编译时。此外，类型可以在
+zval 的生命周期内发生变化，因此如果 zval 之前存储了整数，那么它可能会在稍后的时间点包含字符串。
 
-The type is stored as an integer tag, which can take one of several values. Some values correspond to the eight
-types available in PHP, others are used for internal engine purposes only. These values are referred to using constants
-of the form ``IS_TYPE``. E.g. ``IS_NULL`` corresponds to the null type and ``IS_STRING`` corresponds to the string type.
+存储类型使用整数标记，可以采用几个值的一个。一些值对应于 PHP 中可用的八种类型，其他值仅用于内部引擎。这些值使用 ``IS_TYPE`` 形式的常量来引用。例如
+``IS_NULL`` 对应 null 类型，``IS_STRING`` 对应字符串类型。
 
-The actual value is stored in a union, which is defined as follows::
+实际的值存储在联合体中，联合体定义如下::
 
     typedef union _zend_value {
         zend_long         lval;    // For IS_LONG
@@ -37,12 +34,8 @@ The actual value is stored in a union, which is defined as follows::
         } ww;
     } zend_value;
 
-To those not familiar with the concept of unions: A union defines multiple members of different types, but only one of
-them can ever be used at a time. E.g. if the ``value.lval`` member was set, then you also need to look up the value
-using ``value.lval`` and not one of the other members (doing so would violate "strict aliasing" guarantees and lead to
-undefined behaviour). The reason is that unions store all their members at the same memory location and just interpret
-the value located there differently depending on which member you access. The size of the union is the size of its
-largest member.
+对于那些不熟悉联合概念的人：联合定义了多个不同类型的成员，但一次只能使用一个。例如，如果设置了 ``value.lval`` 成员，那么还需要使用 ``value.lval``
+而不是其他成员查找值（这样做会违反“严格别名”保证并导致未定义的行为）。原因是联合体将其所有成员存储在同一内存位置，并且只是根据访问的成员不同从而以不同的方式解释位于该位置的值。联合体的大小是其最大成员的大小。
 
 When working with zvals the type tag is used to find out which of the union's member is currently in use. Before having
 a look at the APIs used to do so, let's walk through the different types PHP supports and how they are stored:

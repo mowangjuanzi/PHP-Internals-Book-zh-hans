@@ -419,32 +419,24 @@ autoconf/autoheader。此工具的更多信息将在下一节了解到。
 修复编译问题和 ``make clean``
 ----------------------------------------------
 
-As you may know ``make`` performs an incremental build, i.e. it will not recompile all files, but only those ``.c``
-files that changed since the last invocation. This is a great way to shorten build times, but it doesn't always work
-well: For example, if you modify a structure in a header file, ``make`` will not automatically recompile all ``.c``
-files making use of that header, thus leading to a broken build.
+``make`` 执行的是增量编译，即不会重新编译所有文件，而只会重新编译那些自上次调用以来已更改的 ``.c``
+文件。 这是缩短构建时间的好办法，但它并不总是有效：例如，如果在头文件中修改结构，``make``
+将不会自动重新编译使用该头文件的所有 ``.c`` 文件，从而导致编译出错。
 
-If you get odd errors while running ``make`` or the resulting binary is broken (e.g. if ``make test`` crashes it before
-it gets to run the first test), you should try to run ``make clean``. This will delete all compiled objects, thus
-forcing the next ``make`` call to perform a full build. (You can use ``ccache`` to reduce the cost of rebuilds.)
+如果在运行 ``make`` 时遇到奇怪的错误或生成的二进制文件已损坏（例如，如果 ``make test`` 在运行第一个测试之前就崩溃），则应尝试运行
+``make clean``。这将删除所有已编译的对象，从而强制下一次 ``make`` 调用执行完整的编译。（可以使用 ``ccache`` 来降低重新编译成本。）
 
-Sometimes you also need to run ``make clean`` after changing ``./configure`` options. If you only enable additional
-extensions an incremental build should be safe, but changing other options may require a full rebuild.
+有时也需要在更改 ``./configure`` 选项后运行 ``make clean``。如果只启用附加扩展，则增量编译应该是安全的，但更改其他选项可能需要完全重新编译。
 
-Another source of compilation issues is the modification of ``config.m4`` files or other files that are part of the PHP
-build system. If such a file is changed, it is necessary to rerun the ``./buildconf`` and ``./configure`` scripts. If
-you do the modification yourself, you will likely remember to run the command, but if it happens as part of a
-``git pull`` (or some other updating command) the issue might not be so obvious.
+编译问题的另一个原因是修改 ``config.m4`` 文件或属于 PHP 编译系统的其他文件。如果更改了此类文件，则需要重新运行 ``./buildconf`` 和 ``./configure``
+脚本。如果自己进行修改，那么可能会记得运行该命令，但如果它作为 ``git pull`` （或其他一些更新命令）的一部分发生，问题可能不会那么明显。
 
-If you encounter any odd compilation problems that are not resolved by ``make clean``, chances are that running
-``./buildconf`` will fix the issue. To avoid typing out the previous ``./configure`` options afterwards, you can make
-use of the ``./config.nice`` script (which contains your last ``./configure`` call)::
+如果遇到任何无法通过 ``make clean`` 解决的奇怪编译问题，运行 ``./buildconf`` 很可能会解决该问题。为了避免之后再次输入之前的 ``./configure``
+选项，可以使用 ``./config.nice`` 脚本（包含最后一次 ``./configure`` 调用）::
 
     ~/php-src> make clean
     ~/php-src> ./buildconf --force
     ~/php-src> ./config.nice
     ~/php-src> make -jN
 
-One last cleaning script that PHP provides is ``./vcsclean``. This will only work if you checked out the source code
-from git. It effectively boils down to a call to ``git clean -X -f -d``, which will remove all untracked files and
-directories that are ignored by git. You should use this with care.
+PHP 提供的最后一个清理脚本是 ``./vcsclean``。当仅从 git 查看源代码时，这才有效。它实际上归结为对 ``git clean -X -f -d`` 的调用，这将删除 git 忽略的所有未跟踪文件和目录。应该小心使用它。

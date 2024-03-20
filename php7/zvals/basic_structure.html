@@ -42,14 +42,11 @@
 <p>zval（“Zend value”的缩写）表示任意 PHP 值。因此它是所有 PHP 中最重要的结构并且将经常使用它。本节介绍 zval 背后的基本概念及其使用。</p>
 <section id="id2">
 <h2>类型和值<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
-<p>Among other things, every zval stores some value and the type this value has. This is necessary because PHP is a
-dynamically typed language and as such variable types are only known at run-time and not at compile-time. Furthermore,
-the type can change during the life of a zval, so if the zval previously stored an integer it may contain a string at a
-later point in time.</p>
-<p>The type is stored as an integer tag, which can take one of several values. Some values correspond to the eight
-types available in PHP, others are used for internal engine purposes only. These values are referred to using constants
-of the form <code class="docutils literal notranslate"><span class="pre">IS_TYPE</span></code>. E.g. <code class="docutils literal notranslate"><span class="pre">IS_NULL</span></code> corresponds to the null type and <code class="docutils literal notranslate"><span class="pre">IS_STRING</span></code> corresponds to the string type.</p>
-<p>The actual value is stored in a union, which is defined as follows:</p>
+<p>除此之外，每个 zval 都存储一些值以及该值的类型。这是必要的，因为 PHP 是动态类型语言，因此变量类型仅在运行时知道而不是在编译时。此外，类型可以在
+zval 的生命周期内发生变化，因此如果 zval 之前存储了整数，那么它可能会在稍后的时间点包含字符串。</p>
+<p>存储类型使用整数标记，可以采用几个值的一个。一些值对应于 PHP 中可用的八种类型，其他值仅用于内部引擎。这些值使用 <code class="docutils literal notranslate"><span class="pre">IS_TYPE</span></code> 形式的常量来引用。例如
+<code class="docutils literal notranslate"><span class="pre">IS_NULL</span></code> 对应 null 类型，<code class="docutils literal notranslate"><span class="pre">IS_STRING</span></code> 对应字符串类型。</p>
+<p>实际的值存储在联合体中，联合体定义如下:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span><span class="w"> </span><span class="nc">_zend_value</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">zend_long</span><span class="w">         </span><span class="n">lval</span><span class="p">;</span><span class="w">    </span><span class="c1">// For IS_LONG</span>
 <span class="w">    </span><span class="kt">double</span><span class="w">            </span><span class="n">dval</span><span class="p">;</span><span class="w">    </span><span class="c1">// For IS_DOUBLE</span>
@@ -71,12 +68,8 @@ of the form <code class="docutils literal notranslate"><span class="pre">IS_TYPE
 <span class="p">}</span><span class="w"> </span><span class="n">zend_value</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>To those not familiar with the concept of unions: A union defines multiple members of different types, but only one of
-them can ever be used at a time. E.g. if the <code class="docutils literal notranslate"><span class="pre">value.lval</span></code> member was set, then you also need to look up the value
-using <code class="docutils literal notranslate"><span class="pre">value.lval</span></code> and not one of the other members (doing so would violate “strict aliasing” guarantees and lead to
-undefined behaviour). The reason is that unions store all their members at the same memory location and just interpret
-the value located there differently depending on which member you access. The size of the union is the size of its
-largest member.</p>
+<p>对于那些不熟悉联合概念的人：联合定义了多个不同类型的成员，但一次只能使用一个。例如，如果设置了 <code class="docutils literal notranslate"><span class="pre">value.lval</span></code> 成员，那么还需要使用 <code class="docutils literal notranslate"><span class="pre">value.lval</span></code>
+而不是其他成员查找值（这样做会违反“严格别名”保证并导致未定义的行为）。原因是联合体将其所有成员存储在同一内存位置，并且只是根据访问的成员不同从而以不同的方式解释位于该位置的值。联合体的大小是其最大成员的大小。</p>
 <p>When working with zvals the type tag is used to find out which of the union’s member is currently in use. Before having
 a look at the APIs used to do so, let’s walk through the different types PHP supports and how they are stored:</p>
 <p>The simplest type is <code class="docutils literal notranslate"><span class="pre">IS_NULL</span></code>: It doesn’t need to actually store any value, because there is just one <code class="docutils literal notranslate"><span class="pre">null</span></code> value.</p>
