@@ -3,16 +3,14 @@
 编译 PHP 扩展
 =======================
 
-Now that you know how to compile PHP itself, we'll move on to compiling additional extensions. We'll discuss how the
-build process works and what different options are available.
+现在已经知道如何编译 PHP 了，现在将继续编译其它扩展。将讨论编译过程的工作原理以及不同的有效选项。
 
 加载共享扩展
 -------------------------
 
-As you already know from the previous section, PHP extensions can be either built statically into the PHP binary, or
-compiled into a shared object (``.so``). Static linkage is the default for most of the bundled extensions, whereas
-shared objects can be created by explicitly passing ``--enable-EXTNAME=shared`` or ``--with-EXTNAME=shared`` to
-``./configure``.
+正如上一节中所说，PHP 扩展可以静态编译到 PHP 二进制文件中，也可以编译到共享对象（ ``.so``
+）中。静态链接是大多数捆绑扩展的默认设置，而共享对象可以通过手动传递 ``--enable-EXTNAME=shared`` 或 ``--with-EXTNAME=shared``
+到 ``./configure`` 来创建。
 
 While static extensions will always be available, shared extensions need to be loaded using the ``extension`` or
 ``zend_extension`` ini options. Both options take either an absolute path to the ``.so`` file or a path relative to
